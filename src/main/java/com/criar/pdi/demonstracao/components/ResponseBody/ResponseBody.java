@@ -1,5 +1,6 @@
 package com.criar.pdi.demonstracao.components.ResponseBody;
 
+import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,10 +10,11 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class ResponseBody {
     private Integer status;
-    private String message;
 
-    public ResponseBody(Integer status, String message){
-        this.message = message;
+    private IGenericDTO response;
+
+    public ResponseBody(Integer status, IGenericDTO IGenericDTO){
+        this.response = IGenericDTO;
         this.status = status;
     }
 }

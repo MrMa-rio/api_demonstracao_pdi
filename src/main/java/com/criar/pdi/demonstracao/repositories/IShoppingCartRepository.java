@@ -1,4 +1,7 @@
 package com.criar.pdi.demonstracao.repositories;
 
-public interface IShoppingCartRepository {
+import com.criar.pdi.demonstracao.models.User.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IShoppingCartRepository extends JpaRepository<User, Integer> {
 }

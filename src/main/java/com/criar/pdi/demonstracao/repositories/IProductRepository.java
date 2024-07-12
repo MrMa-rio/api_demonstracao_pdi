@@ -1,4 +1,7 @@
 package com.criar.pdi.demonstracao.repositories;
 
-public interface IProductRepository {
+import com.criar.pdi.demonstracao.models.User.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IProductRepository extends JpaRepository<User, Integer> {
 }
