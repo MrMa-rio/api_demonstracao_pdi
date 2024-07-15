@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record StoreDTO(
+public record StoreCommonDTO(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         String ID,
         @NotBlank
@@ -22,6 +22,6 @@ public record StoreDTO(
         String region,
         @NotNull
         String cnpj,
-        LocalDateTime inclusionDate
-) implements IGenericDTO {
-}
+        LocalDateTime inclusionDate,
+        LocalDateTime updateDate,
+        LocalDateTime exclusionDate)  implements IGenericDTO {}

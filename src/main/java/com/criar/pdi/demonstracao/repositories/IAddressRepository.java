@@ -1,4 +1,4 @@
 package com.criar.pdi.demonstracao.repositories;
 
-public interface IAdressRepository {
+public interface IAddressRepository {
 }

@@ -1,14 +1,15 @@
 package com.criar.pdi.demonstracao.controllers;
 
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
-import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
-import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
-import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
+import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
+import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
+import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
+import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
-import com.criar.pdi.demonstracao.services.UserService;
+import com.criar.pdi.demonstracao.services.StoreService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,16 +18,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/store")
+public class StoreController {
 
     @Autowired
-    private UserService userService;
+    private StoreService storeService;
 
-    @GetMapping("/{userID}")
-    public ResponseEntity<?> getUser(@PathVariable String userID){
+    @GetMapping("/{storeID}")
+    public ResponseEntity<?> getStore(@PathVariable String storeID){
         try{
-            return ResponseEntity.ok(new ResponseBody(200, userService.getUserByID(userID)));
+            return ResponseEntity.ok(new ResponseBody(200, storeService.getStoreByID(storeID)));
         } catch (StoreNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
             return ResponseEntity.ok(responseBody);
@@ -35,22 +36,22 @@ public class UserController {
         }
     }
     @GetMapping
-    public ResponseEntity<?> getUsers(
+    public ResponseEntity<?> getStores(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ){
         try{
-            Page<UserCommonDTO> pages = userService.getUsers(page, size);
+            Page<StoreCommonDTO> pages = storeService.getStores(page, size);
             return ResponseEntity.ok(pages);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
     @PostMapping
-    public ResponseEntity<?> setUser(@RequestBody @Valid UserDTO userDTO){
+    public ResponseEntity<?> setStore(@RequestBody @Valid StoreDTO storeDTO){
         try{
-            UserCommonDTO userCommonDTO = userService.setUser(userDTO);
-            return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
+            StoreCommonDTO storeCommonDTO = storeService.setStore(storeDTO);
+            return ResponseEntity.ok(new ResponseBody(200, storeCommonDTO));
         }catch (StoreDuplicateDataException e){
             return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
@@ -60,23 +61,24 @@ public class UserController {
     }
     @PutMapping
     @Transactional
-    public ResponseEntity<?> updateUser(@RequestBody @Valid UserUpdateDTO userUpdateDTO){
+    public ResponseEntity<?> updateStore(@RequestBody @Valid StoreUpdateDTO storeUpdateDTO){
         try{
-            UserCommonDTO userCommonDTO = userService.updateUser(userUpdateDTO);
-            return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
+            StoreCommonDTO storeCommonDTO = storeService.updateStore(storeUpdateDTO);
+            return ResponseEntity.ok(new ResponseBody(200, storeCommonDTO));
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }
-    @DeleteMapping("/{userID}")
-    public ResponseEntity<ResponseBody> deleteLogicalUser(
-            @PathVariable String userID
+    @DeleteMapping("/{storeID}")
+    public ResponseEntity<ResponseBody> deleteLogicalStore(
+            @PathVariable String storeID
     ){
         try{
-            userService.deleteUser(userID);
-            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("Usuario inativado com sucesso!!")));
-        } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("Erro ao inativar usuario!!")));
+            storeService.deleteStore(storeID);
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("LOJA INATIVADA COM SUCESSO!!")));
+        } catch (StoreGenericException | StoreNotFoundException e){
+            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }
+

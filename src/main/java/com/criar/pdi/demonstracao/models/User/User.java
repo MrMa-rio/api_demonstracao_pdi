@@ -40,7 +40,7 @@ public class User {
         this.userAccessLevel = userDTO.userAccessLevel();
     }
 
-    public UserCommonDTO getUserCommon() {
+    public UserCommonDTO getCommonDTO() {
         return new UserCommonDTO(
                 this.ID,
                 this.name,
@@ -54,8 +54,8 @@ public class User {
         );
     }
 
-    public void setInclusionDate(LocalDateTime inclusionDate) {
-        this.inclusionDate = inclusionDate;
+    public void setInclusionDate() {
+        this.inclusionDate = LocalDateTime.now();
     }
 
     public void setUpdateDate(LocalDateTime updateDate) {

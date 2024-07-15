@@ -1,15 +1,14 @@
-package com.criar.pdi.demonstracao.models.Adress;
+package com.criar.pdi.demonstracao.models.Address;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "adress_tbl")
+@Table(name = "address_tbl")
 @Entity
 @Getter
 @NoArgsConstructor
-public class Adress {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

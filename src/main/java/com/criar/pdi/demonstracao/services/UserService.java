@@ -3,6 +3,7 @@ package com.criar.pdi.demonstracao.services;
 import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
+
 import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;
@@ -27,7 +28,7 @@ public class UserService {
     public UserCommonDTO getUserByID(String userID) {
         try {
             User user = iUserRepository.findById(Integer.valueOf(userID)).orElseThrow();
-            return user.getUserCommon();
+            return user.getCommonDTO();
         } catch (NoSuchElementException e) {
             throw new UserNotFoundException();
         } catch (NumberFormatException e) {
@@ -41,16 +42,16 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = iUserRepository.findAll(pageable);
         List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
-                .map(User::getUserCommon).toList();
+                .map(User::getCommonDTO).toList();
         return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
     }
 
     public UserCommonDTO setUser(UserDTO userDTO) {
         try {
             User user = new User(userDTO);
-            user.setInclusionDate(LocalDateTime.now());
+            user.setInclusionDate();
             iUserRepository.save(user);
-            return user.getUserCommon();
+            return user.getCommonDTO();
         } catch (DataIntegrityViolationException e) {
             throw new UserDuplicateDataException();
         }
