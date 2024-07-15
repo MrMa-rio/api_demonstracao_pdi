@@ -3,7 +3,7 @@ package com.criar.pdi.demonstracao.services;
 import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
-import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException;
+import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;
 import com.criar.pdi.demonstracao.models.User.User;
@@ -15,12 +15,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -56,7 +53,8 @@ public class UserService {
             return user.getUserCommon();
         } catch (DataIntegrityViolationException e) {
             throw new UserDuplicateDataException();
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
