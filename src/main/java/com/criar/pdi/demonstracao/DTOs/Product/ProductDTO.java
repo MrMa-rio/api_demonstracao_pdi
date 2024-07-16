@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,6 @@ public record ProductDTO(
         String ID,
         String name,
         String description,
-        @NotBlank
         Double price,
         Integer quantity,
         @NotNull
@@ -23,7 +23,6 @@ public record ProductDTO(
         String store,
         String images,
         String specification,
-        @NotBlank
         LocalDateTime inclusionDate,
         LocalDateTime updatedDate,
         LocalDateTime exclusionDate

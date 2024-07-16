@@ -81,7 +81,7 @@ public class ProductService {
         try{
             Product product = iProductRepository.findById(Integer.valueOf(productID)).orElseThrow();
             if(product.isInactive()){
-                throw new StoreGenericException("ESTA LOJA JA ESTA INATIVADA!!");
+                throw new StoreGenericException("ESTE PRODUTO JA ESTA INATIVADO!!");
             }
             product.setExclusionDate();
             iProductRepository.saveAndFlush(product);

@@ -29,6 +29,15 @@ public class Product {
     private LocalDateTime exclusionDate;
 
     public Product(ProductDTO productDTO) {
+        this.ID = productDTO.ID();
+        this.name = productDTO.name();
+        this.description = productDTO.description();
+        this.price = productDTO.price();
+        this.quantity = productDTO.quantity();
+        this.category = productDTO.category();
+        this.store = productDTO.store();
+        this.images = productDTO.images();
+        this.specification = productDTO.specification();
     }
 
     public ProductDTO getCommonDTO() {
@@ -48,15 +57,47 @@ public class Product {
         );
     }
 
+    public void setInclusionDate() {
+        this.inclusionDate = LocalDateTime.now();
+    }
+
+    public void setUpdateDate() {
+        this.updatedDate = this.inclusionDate = LocalDateTime.now();
+    }
+
     public void setExclusionDate() {
+        this.exclusionDate = LocalDateTime.now();
     }
 
     public boolean isInactive() {
+        return true;
     }
 
     public void update(ProductDTO productDTO) {
-    }
-
-    public void setInclusionDate() {
+        setUpdateDate();
+        if(productDTO.name() != null){
+            this.name = productDTO.name();
+        }
+        if(productDTO.description() != null){
+            this.description = productDTO.description();
+        }
+        if(productDTO.price() != null){
+            this.price = productDTO.price();
+        }
+        if(productDTO.quantity() != null){
+            this.quantity = productDTO.quantity();
+        }
+        if(productDTO.category() != null){
+            this.category = productDTO.category();
+        }
+        if(productDTO.store() != null){
+            this.store = productDTO.store();
+        }
+        if(productDTO.images() != null){
+            this.images = productDTO.images();
+        }
+        if(productDTO.specification() != null){
+            this.specification = productDTO.specification();
+        }
     }
 }

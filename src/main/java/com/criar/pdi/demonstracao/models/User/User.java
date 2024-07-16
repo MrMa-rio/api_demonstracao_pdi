@@ -58,8 +58,8 @@ public class User {
         this.inclusionDate = LocalDateTime.now();
     }
 
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updatedDate = updateDate;
+    public void setUpdateDate() {
+        this.updatedDate = LocalDateTime.now();
     }
     public void setExclusionDate(){
         this.exclusionDate = LocalDateTime.now();
@@ -67,7 +67,7 @@ public class User {
 
     public void update(UserUpdateDTO userUpdateDTO) {
 
-        this.setUpdateDate(LocalDateTime.now());
+        this.setUpdateDate();
 
         if(userUpdateDTO.name() != null){
             this.name = userUpdateDTO.name();
@@ -80,6 +80,9 @@ public class User {
         }
         if(userUpdateDTO.cpf() != null){
             this.cpf = userUpdateDTO.cpf();
+        }
+        if(userUpdateDTO.password() != null){
+            this.password = new BCryptPasswordEncoder().encode(userUpdateDTO.password());
         }
         if(userUpdateDTO.userAccessLevel() != null){
             this.userAccessLevel = userUpdateDTO.userAccessLevel();
