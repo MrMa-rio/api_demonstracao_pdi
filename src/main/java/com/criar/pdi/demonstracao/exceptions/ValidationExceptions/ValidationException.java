@@ -2,6 +2,7 @@ package com.criar.pdi.demonstracao.exceptions.ValidationExceptions;
 
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
+import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,4 +25,10 @@ public class ValidationException {
 
         return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(errors)));
     }
+
+//    @ExceptionHandler(UnexpectedTypeException.class)
+//    public ResponseEntity<?> validation(UnexpectedTypeException ex){
+//
+//        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(ex.)));
+//    }
 }

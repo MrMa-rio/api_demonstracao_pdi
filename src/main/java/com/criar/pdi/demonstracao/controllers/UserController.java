@@ -5,9 +5,10 @@ import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
-import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
-import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
-import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
+
+import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
+import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
+import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;
 import com.criar.pdi.demonstracao.services.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -27,10 +28,10 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable String userID){
         try{
             return ResponseEntity.ok(new ResponseBody(200, userService.getUserByID(userID)));
-        } catch (StoreNotFoundException e){
+        } catch (UserNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
             return ResponseEntity.ok(responseBody);
-        } catch (StoreIdentifyException e){
+        } catch (UserIdentifyException e){
             return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
@@ -51,7 +52,7 @@ public class UserController {
         try{
             UserCommonDTO userCommonDTO = userService.setUser(userDTO);
             return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
-        }catch (StoreDuplicateDataException e){
+        }catch (UserDuplicateDataException e){
             return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
         catch (RuntimeException e){

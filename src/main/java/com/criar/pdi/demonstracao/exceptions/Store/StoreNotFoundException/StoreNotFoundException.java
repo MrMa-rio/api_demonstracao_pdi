@@ -1,7 +1,5 @@
 package com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException;
 
-import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
