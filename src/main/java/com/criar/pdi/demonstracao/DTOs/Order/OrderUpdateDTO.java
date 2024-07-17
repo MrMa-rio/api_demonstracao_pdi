@@ -8,17 +8,14 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record OrderDTO(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public record OrderUpdateDTO(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @NotNull
         String ID,
-        @NotNull
         String userID,
-        @NotNull
         String shoppingCart,
-        @NotNull
         String deliveryAddress,
-        @NotNull
-        String status,
-        LocalDateTime inclusionDate
+        String status
 ) implements IGenericDTO {
 }

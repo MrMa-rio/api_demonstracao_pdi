@@ -1,15 +1,12 @@
 package com.criar.pdi.demonstracao.DTOs.Order;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record OrderDTO(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public record OrderCommonDTO(
+        @NotNull
         String ID,
         @NotNull
         String userID,
@@ -19,6 +16,9 @@ public record OrderDTO(
         String deliveryAddress,
         @NotNull
         String status,
-        LocalDateTime inclusionDate
+        @NotNull
+        LocalDateTime inclusionDate,
+        LocalDateTime updatedDate,
+        LocalDateTime exclusionDate
 ) implements IGenericDTO {
 }
