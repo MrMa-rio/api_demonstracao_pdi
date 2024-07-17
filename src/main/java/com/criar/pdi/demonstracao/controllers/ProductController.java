@@ -42,8 +42,7 @@ public class ProductController {
         try{
             return ResponseEntity.ok(new ResponseBody(200, productService.getStoreByID(productID)));
         } catch (ProductNotFoundException e){
-            ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (ProductIdentifyException e){
             return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
@@ -67,7 +66,9 @@ public class ProductController {
         try{
             ProductCommonDTO productCommonDTO = productService.updateProduct(productUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, productCommonDTO));
-        }catch (RuntimeException e){
+        } catch (ProductNotFoundException e){
+            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }

@@ -4,7 +4,9 @@ import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
 
+import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
+import com.criar.pdi.demonstracao.exceptions.User.UserGenericException.UserGenericException;
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;
 import com.criar.pdi.demonstracao.models.User.User;
@@ -74,9 +76,15 @@ public class UserService {
     public void deleteUser(String userID){
         try{
             User user = iUserRepository.findById(Integer.valueOf(userID)).orElseThrow();
+            if(user.isInactive()){
+                throw new UserGenericException("ESTE USUARIO JA ESTA INATIVADO!!");
+            }
             user.setExclusionDate();
             iUserRepository.saveAndFlush(user);
-        } catch (RuntimeException e){
+        } catch (NoSuchElementException e){
+            throw new UserNotFoundException();
+        }
+        catch (RuntimeException e){
             throw new RuntimeException(e);
         }
     }

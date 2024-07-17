@@ -5,6 +5,7 @@ import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
+import com.criar.pdi.demonstracao.exceptions.Product.ProductNotFoundException.ProductNotFoundException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
@@ -65,7 +66,9 @@ public class StoreController {
         try{
             StoreCommonDTO storeCommonDTO = storeService.updateStore(storeUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, storeCommonDTO));
-        }catch (RuntimeException e){
+        } catch (StoreNotFoundException e){
+            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }
@@ -76,7 +79,9 @@ public class StoreController {
         try{
             storeService.deleteStore(storeID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("LOJA INATIVADA COM SUCESSO!!")));
-        } catch (StoreGenericException | StoreNotFoundException e){
+        } catch (StoreNotFoundException e){
+            return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (StoreGenericException e){
             return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }

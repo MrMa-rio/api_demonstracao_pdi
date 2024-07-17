@@ -88,4 +88,8 @@ public class User {
             this.userAccessLevel = userUpdateDTO.userAccessLevel();
         }
     }
+
+    public boolean isInactive() {
+        return this.exclusionDate != null;
+    }
 }

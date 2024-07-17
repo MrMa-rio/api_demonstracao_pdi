@@ -6,17 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
-public record ReviewDTO(
+public record ReviewUpdateDTO(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @NotNull
         String ID,
-        @NotNull
         String productID,
-        @NotNull
         String storeID,
-        @NotNull
         String userID,
-        @NotNull
         String ratingStar,
         String comment
 ) implements IGenericDTO {

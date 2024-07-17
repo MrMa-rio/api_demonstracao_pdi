@@ -43,7 +43,9 @@ public class UserController {
         try{
             Page<UserCommonDTO> pages = userService.getUsers(page, size);
             return ResponseEntity.ok(pages);
-        }catch (RuntimeException e){
+        } catch (UserNotFoundException e){
+            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
@@ -65,7 +67,9 @@ public class UserController {
         try{
             UserCommonDTO userCommonDTO = userService.updateUser(userUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
-        }catch (RuntimeException e){
+        } catch (UserNotFoundException e){
+            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }
@@ -76,6 +80,8 @@ public class UserController {
         try{
             userService.deleteUser(userID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("Usuario inativado com sucesso!!")));
+        } catch (UserNotFoundException e){
+            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("Erro ao inativar usuario!!")));
         }

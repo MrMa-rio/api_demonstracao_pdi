@@ -6,7 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
-public record ReviewDTO(
+import java.time.LocalDateTime;
+
+public record ReviewCommonDTO(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         String ID,
@@ -18,6 +20,11 @@ public record ReviewDTO(
         String userID,
         @NotNull
         String ratingStar,
-        String comment
+        @NotNull
+        String comment,
+        @NotNull
+        LocalDateTime inclusionDate,
+        LocalDateTime updatedDate,
+        LocalDateTime exclusionDate
 ) implements IGenericDTO {
 }
