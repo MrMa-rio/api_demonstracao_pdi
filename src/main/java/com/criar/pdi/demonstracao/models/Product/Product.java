@@ -72,7 +72,7 @@ public class Product {
     }
 
     public boolean isInactive() {
-        return true;
+        return this.exclusionDate != null;
     }
 
     public void update(ProductUpdateDTO productUpdateDTO) {
