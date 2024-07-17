@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ProductGenericException extends RuntimeException{
 
     public ProductGenericException(){
-        super("ERRO AO REALIZAR UMA OPERAÇÃO - LOJA");
+        super("ERRO AO REALIZAR UMA OPERAÇÃO - PRODUTO");
     }
     public ProductGenericException(String message){
         super(message);

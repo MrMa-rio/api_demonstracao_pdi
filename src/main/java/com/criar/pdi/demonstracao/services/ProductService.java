@@ -1,7 +1,9 @@
 package com.criar.pdi.demonstracao.services;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
+import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductDTO;
+import com.criar.pdi.demonstracao.DTOs.Product.ProductUpdateDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
@@ -30,15 +32,15 @@ import java.util.NoSuchElementException;
 public class ProductService {
     @Autowired
     IProductRepository iProductRepository;
-    public Page<ProductDTO> getProducts(int page, int size) {
+    public Page<ProductCommonDTO> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = iProductRepository.findAll(pageable);
-        List<ProductDTO> storeCommonDTOList = productPage.getContent().stream()
+        List<ProductCommonDTO> storeCommonDTOList = productPage.getContent().stream()
                 .map(Product::getCommonDTO).toList();
         return new PageImpl<>(storeCommonDTOList, pageable, productPage.getTotalElements());
     }
 
-    public ProductDTO getStoreByID(String productID) {
+    public ProductCommonDTO getStoreByID(String productID) {
         try {
             Product product = iProductRepository.findById(Integer.valueOf(productID)).orElseThrow();
             return product.getCommonDTO();
@@ -51,7 +53,7 @@ public class ProductService {
         }
     }
 
-    public ProductDTO setProduct(ProductDTO productDTO) {
+    public ProductCommonDTO setProduct(ProductDTO productDTO) {
         try {
             Product product = new Product(productDTO);
             product.setInclusionDate();
@@ -65,12 +67,12 @@ public class ProductService {
         }
     }
 
-    public ProductDTO updateProduct(ProductDTO productDTO) {
+    public ProductCommonDTO updateProduct(ProductUpdateDTO productUpdateDTO) {
         try {
-            Product product = iProductRepository.findById(Integer.valueOf(productDTO.ID())).orElseThrow();
-            product.update(productDTO);
+            Product product = iProductRepository.findById(Integer.valueOf(productUpdateDTO.ID())).orElseThrow();
+            product.update(productUpdateDTO);
             iProductRepository.saveAndFlush(product);
-            return getStoreByID(productDTO.ID());
+            return getStoreByID(productUpdateDTO.ID());
         } catch (NoSuchElementException e) {
             throw new StoreNotFoundException();
         } catch (RuntimeException e) {

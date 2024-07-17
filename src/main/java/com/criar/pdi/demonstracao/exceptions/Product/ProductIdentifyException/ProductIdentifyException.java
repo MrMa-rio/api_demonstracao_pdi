@@ -5,6 +5,6 @@ public class ProductIdentifyException extends RuntimeException{
         super(message);
     }
     public ProductIdentifyException(){
-        super("IDENTIFICADOR DA LOJA INVALIDO");
+        super("IDENTIFICADOR DO PRODUTO INVALIDO");
     }
 }

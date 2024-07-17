@@ -1,6 +1,8 @@
 package com.criar.pdi.demonstracao.models.Product;
 
+import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductDTO;
+import com.criar.pdi.demonstracao.DTOs.Product.ProductUpdateDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,8 +42,8 @@ public class Product {
         this.specification = productDTO.specification();
     }
 
-    public ProductDTO getCommonDTO() {
-        return new ProductDTO(
+    public ProductCommonDTO getCommonDTO() {
+        return new ProductCommonDTO(
                 this.ID,
                 this.name,
                 this.description,
@@ -62,7 +64,7 @@ public class Product {
     }
 
     public void setUpdateDate() {
-        this.updatedDate = this.inclusionDate = LocalDateTime.now();
+        this.updatedDate = LocalDateTime.now();
     }
 
     public void setExclusionDate() {
@@ -73,31 +75,31 @@ public class Product {
         return true;
     }
 
-    public void update(ProductDTO productDTO) {
+    public void update(ProductUpdateDTO productUpdateDTO) {
         setUpdateDate();
-        if(productDTO.name() != null){
-            this.name = productDTO.name();
+        if(productUpdateDTO.name() != null){
+            this.name = productUpdateDTO.name();
         }
-        if(productDTO.description() != null){
-            this.description = productDTO.description();
+        if(productUpdateDTO.description() != null){
+            this.description = productUpdateDTO.description();
         }
-        if(productDTO.price() != null){
-            this.price = productDTO.price();
+        if(productUpdateDTO.price() != null){
+            this.price = Double.valueOf(productUpdateDTO.price());
         }
-        if(productDTO.quantity() != null){
-            this.quantity = productDTO.quantity();
+        if(productUpdateDTO.quantity() != null){
+            this.quantity = productUpdateDTO.quantity();
         }
-        if(productDTO.category() != null){
-            this.category = productDTO.category();
+        if(productUpdateDTO.category() != null){
+            this.category = productUpdateDTO.category();
         }
-        if(productDTO.store() != null){
-            this.store = productDTO.store();
+        if(productUpdateDTO.store() != null){
+            this.store = productUpdateDTO.store();
         }
-        if(productDTO.images() != null){
-            this.images = productDTO.images();
+        if(productUpdateDTO.images() != null){
+            this.images = productUpdateDTO.images();
         }
-        if(productDTO.specification() != null){
-            this.specification = productDTO.specification();
+        if(productUpdateDTO.specification() != null){
+            this.specification = productUpdateDTO.specification();
         }
     }
 }

@@ -4,22 +4,27 @@ import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-
-public record ProductDTO(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public record ProductCommonDTO(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @NotNull
         String ID,
+        @NotNull
         String name,
         String description,
         Double price,
         Integer quantity,
         @NotNull
         String category,
-        @NotBlank
+        @NotNull
         String store,
         String images,
-        String specification
+        String specification,
+        LocalDateTime inclusionDate,
+        LocalDateTime updatedDate,
+        LocalDateTime exclusionDate
 ) implements IGenericDTO {
 }

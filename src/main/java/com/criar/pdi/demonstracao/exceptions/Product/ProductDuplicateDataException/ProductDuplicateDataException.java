@@ -5,6 +5,6 @@ public class ProductDuplicateDataException extends RuntimeException{
         super(message);
     }
     public ProductDuplicateDataException(){
-        super("JA EXISTE UM CADASTRO PARA ESTA LOJA.");
+        super("JA EXISTE UM CADASTRO PARA ESTE PRODUTO.");
     }
 }

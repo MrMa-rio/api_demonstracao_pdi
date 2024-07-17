@@ -4,20 +4,18 @@ import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-
-public record ProductDTO(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public record ProductUpdateDTO(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @NotNull
         String ID,
         String name,
         String description,
-        Double price,
+        String price,
         Integer quantity,
-        @NotNull
         String category,
-        @NotBlank
         String store,
         String images,
         String specification

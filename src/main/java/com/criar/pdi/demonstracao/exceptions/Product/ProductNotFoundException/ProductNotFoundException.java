@@ -8,6 +8,6 @@ public class ProductNotFoundException extends RuntimeException{
         super(message);
     }
     public ProductNotFoundException(){
-        super("LOJA NAO ENCONTRADA");
+        super("PRODUTO NAO ENCONTRADO");
     }
 }
