@@ -7,8 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.NumberFormat;
 
-import java.time.LocalDateTime;
-
 public record OrderUpdateDTO(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +14,7 @@ public record OrderUpdateDTO(
         String ID,
         @NumberFormat
         String userID,
-        String shoppingCart,
+        String shoppingCartID,
         String deliveryAddress,
         String status
 ) implements IGenericDTO {

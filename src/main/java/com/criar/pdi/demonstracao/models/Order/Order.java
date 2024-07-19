@@ -19,7 +19,8 @@ public class Order {
     private String ID;
     @Column(name = "user_id")
     private String userID;
-    private String shoppingCart;
+    @Column(name = "shopping_cart_id")
+    private String shoppingCartID;
     private String deliveryAddress;
     private String status;
     private LocalDateTime inclusionDate;
@@ -29,7 +30,7 @@ public class Order {
     public Order(OrderDTO orderDTO){
         this.ID = orderDTO.ID();
         this.userID = orderDTO.userID();
-        this.shoppingCart = orderDTO.shoppingCart();
+        this.shoppingCartID = orderDTO.shoppingCartID();
         this.deliveryAddress = orderDTO.deliveryAddress();
         this.status = orderDTO.status();
     }
@@ -38,7 +39,7 @@ public class Order {
         return new OrderCommonDTO(
                 this.ID,
                 this.userID,
-                this.shoppingCart,
+                this.shoppingCartID,
                 this.deliveryAddress,
                 this.status,
                 this.inclusionDate,

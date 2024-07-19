@@ -12,7 +12,7 @@ public record OrderCommonDTO(
         @NotNull @NumberFormat
         String userID,
         @NotNull
-        String shoppingCart,
+        String shoppingCartID,
         @NotNull
         String deliveryAddress,
         @NotNull
