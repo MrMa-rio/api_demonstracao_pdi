@@ -2,13 +2,14 @@ package com.criar.pdi.demonstracao.DTOs.Order;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDateTime;
 
 public record OrderCommonDTO(
         @NotNull
         String ID,
-        @NotNull
+        @NotNull @NumberFormat
         String userID,
         @NotNull
         String shoppingCart,

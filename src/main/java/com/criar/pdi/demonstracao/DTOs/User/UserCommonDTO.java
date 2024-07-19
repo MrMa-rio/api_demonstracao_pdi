@@ -5,6 +5,7 @@ import com.criar.pdi.demonstracao.models.User.UserAccessLevel;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ public record UserCommonDTO(
         String fullName,
         @NotBlank
         String email,
-        @NotBlank
+        @NotBlank @Pattern(regexp = "\\d{11}")
         String cpf,
         @NotBlank
         UserAccessLevel userAccessLevel,

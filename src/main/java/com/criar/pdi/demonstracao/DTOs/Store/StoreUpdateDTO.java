@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public record StoreUpdateDTO(
         String address,
         String phone,
         String region,
+        @Pattern(regexp = "\\d{14}")
         String cnpj
 ) implements IGenericDTO {
 }

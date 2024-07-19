@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.NumberFormat;
 
 public record ReviewDTO(
         @Id
@@ -14,7 +15,7 @@ public record ReviewDTO(
         String productID,
         @NotNull
         String storeID,
-        @NotNull
+        @NotNull @NumberFormat
         String userID,
         @NotNull
         String ratingStar,

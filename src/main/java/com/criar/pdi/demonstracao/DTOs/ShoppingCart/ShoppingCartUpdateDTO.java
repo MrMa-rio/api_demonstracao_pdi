@@ -1,13 +1,12 @@
 package com.criar.pdi.demonstracao.DTOs.ShoppingCart;
 
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
+import org.springframework.format.annotation.NumberFormat;
 
 public record ShoppingCartUpdateDTO(
         @NotNull
         String ID,
-        @NotNull
+        @NotNull @NumberFormat
         String userID
 ) {
 }

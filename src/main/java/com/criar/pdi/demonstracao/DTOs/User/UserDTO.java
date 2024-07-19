@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import java.time.LocalDateTime;
 
 @JsonTypeName
@@ -23,7 +25,7 @@ public record UserDTO(
         String email,
         @NotBlank
         String password,
-        @NotBlank
+        @NotBlank @Pattern(regexp = "\\d{11}")
         String cpf,
         LocalDateTime inclusionDate,
         @NotNull

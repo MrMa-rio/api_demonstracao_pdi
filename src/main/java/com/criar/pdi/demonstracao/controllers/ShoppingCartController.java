@@ -79,7 +79,10 @@ public class ShoppingCartController {
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("CARRINHO DE COMPRAS INATIVADO COM SUCESSO!!")));
         } catch (ShoppingCartNotFoundException e){
             return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (ShoppingCartGenericException e){
+        } catch (ShoppingCartIdentifyException e){
+            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+        }
+        catch (ShoppingCartGenericException e){
             return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }

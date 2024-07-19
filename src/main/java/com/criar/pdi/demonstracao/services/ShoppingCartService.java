@@ -54,8 +54,7 @@ public class ShoppingCartService {
             return shoppingCart.getCommonDTO();
         } catch (DataIntegrityViolationException e) {
             throw new ShoppingCartDuplicateDataException();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
@@ -68,22 +67,26 @@ public class ShoppingCartService {
             return getShoppingCartByID(shoppingCartUpdateDTO.ID());
         } catch (NoSuchElementException e) {
             throw new ShoppingCartNotFoundException();
+        } catch (NumberFormatException e) {
+            throw new ShoppingCartIdentifyException();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void deleteShoppingCart(String shoppingCartID) {
-        try{
+        try {
             ShoppingCart shoppingCart = iShoppingCartRepository.findById(Integer.valueOf(shoppingCartID)).orElseThrow();
-            if(shoppingCart.isInactive()){
+            if (shoppingCart.isInactive()) {
                 throw new ShoppingCartGenericException("ESTE CARRINHO DE COMPRAS JA ESTA INATIVADO!!");
             }
             shoppingCart.setExclusionDate();
             iShoppingCartRepository.saveAndFlush(shoppingCart);
         } catch (NoSuchElementException e) {
             throw new ShoppingCartNotFoundException();
-        } catch (RuntimeException e){
+        } catch (NumberFormatException e) {
+            throw new ShoppingCartIdentifyException();
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
