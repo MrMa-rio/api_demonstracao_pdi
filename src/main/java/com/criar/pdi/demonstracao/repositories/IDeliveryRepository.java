@@ -1,4 +1,7 @@
 package com.criar.pdi.demonstracao.repositories;
 
-public interface IDeliveryRepository {
+import com.criar.pdi.demonstracao.models.Delivery.Delivery;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IDeliveryRepository extends JpaRepository<Delivery, Integer> {
 }
