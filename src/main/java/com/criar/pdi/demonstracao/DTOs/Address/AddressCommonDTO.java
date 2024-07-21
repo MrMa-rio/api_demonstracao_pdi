@@ -1,28 +1,22 @@
 package com.criar.pdi.demonstracao.DTOs.Address;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record AddressDTO(
+public record AddressCommonDTO(
         String ID,
         String number,
-        @NotEmpty
         String street,
-        @NotEmpty
         String neighborhood,
-        @NotNull
         String userID,
         String complement,
-        @NotEmpty
         String city,
-        @NotNull
         String state,
-        @NotNull
         String zipCode,
-        @NotNull
-        String country
+        String country,
+        LocalDateTime inclusionDate,
+        LocalDateTime updatedDate,
+        LocalDateTime exclusionDate
 ) implements IGenericDTO {
 }

@@ -1,6 +1,5 @@
 package com.criar.pdi.demonstracao.controllers;
 
-import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartDTO;
@@ -14,7 +13,6 @@ import com.criar.pdi.demonstracao.services.ProductInCartService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

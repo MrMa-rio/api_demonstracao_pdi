@@ -4,27 +4,17 @@ import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.DTOs.Payment.PaymentCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Payment.PaymentDTO;
 import com.criar.pdi.demonstracao.DTOs.Payment.PaymentUpdateDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartCommonDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.Payment.PaymentDuplicateDataException.PaymentDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.Payment.PaymentGenericException.PaymentGenericException;
 import com.criar.pdi.demonstracao.exceptions.Payment.PaymentIdentifyException.PaymentIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Payment.PaymentNotFoundException.PaymentNotFoundException;
-import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartDuplicateDataException.ProductInCartDuplicateDataException;
-import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartGenericException.ProductInCartGenericException;
-import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartIdentifyException.ProductInCartIdentifyException;
-import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartNotFoundException.ProductInCartNotFoundException;
 import com.criar.pdi.demonstracao.services.PaymentService;
-import com.criar.pdi.demonstracao.services.ProductInCartService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/payment")

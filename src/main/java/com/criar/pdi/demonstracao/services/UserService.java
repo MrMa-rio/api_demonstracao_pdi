@@ -3,8 +3,6 @@ package com.criar.pdi.demonstracao.services;
 import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
-
-import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.User.UserGenericException.UserGenericException;
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
@@ -18,7 +16,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 

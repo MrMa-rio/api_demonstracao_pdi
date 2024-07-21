@@ -5,7 +5,6 @@ import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
-
 import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;

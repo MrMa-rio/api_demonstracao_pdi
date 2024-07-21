@@ -7,7 +7,6 @@ import com.criar.pdi.demonstracao.exceptions.Review.ReviewDuplicateDataException
 import com.criar.pdi.demonstracao.exceptions.Review.ReviewGenericException.ReviewGenericException;
 import com.criar.pdi.demonstracao.exceptions.Review.ReviewIdentifyException.ReviewIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Review.ReviewNotFoundException.ReviewNotFoundException;
-import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.models.Review.Review;
 import com.criar.pdi.demonstracao.repositories.IReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -22,19 +22,6 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-//    @GetMapping
-//    public ResponseEntity<?> getProducts(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ){
-//        try{
-//            Page<ProductCommonDTO> pages = reviewService.getProducts(page, size);
-//            return ResponseEntity.ok(pages);
-//        }catch (RuntimeException e){
-//            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
-//        }
-//    }
-
     @GetMapping("/{reviewID}")
     public ResponseEntity<ResponseBody> getReview(@PathVariable @Valid String reviewID) {
         try {
