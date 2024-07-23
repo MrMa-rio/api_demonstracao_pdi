@@ -1,2 +1,4 @@
-1 - Criar o CRUD completo dos usuarios (Lojista, analista e Administrador)
+1 - Criar o CRUD completo das tabelas em geral
 2 - Criar uma UserException generica para tratamento de retornos de mensagens
+3 - Criar tratamento de erros genericos
+4 -

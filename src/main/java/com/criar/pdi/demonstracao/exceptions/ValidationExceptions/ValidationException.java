@@ -4,6 +4,7 @@ import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,9 +27,9 @@ public class ValidationException {
         return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(errors)));
     }
 
-//    @ExceptionHandler(UnexpectedTypeException.class)
-//    public ResponseEntity<?> validation(UnexpectedTypeException ex){
-//
-//        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(ex.)));
-//    }
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<?> validation(InternalAuthenticationServiceException ex){
+
+        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO("ERRO")));
+    }
 }

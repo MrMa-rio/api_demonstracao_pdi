@@ -69,7 +69,7 @@ public class PaymentController {
         }
     }
     @DeleteMapping("/{paymentID}")
-    public ResponseEntity<ResponseBody> deleteLogicalShoppingCart(
+    public ResponseEntity<ResponseBody> deleteLogicalPayment(
             @PathVariable String paymentID
     ){
         try{
