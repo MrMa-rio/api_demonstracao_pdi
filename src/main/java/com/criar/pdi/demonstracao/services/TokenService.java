@@ -1,6 +1,9 @@
 package com.criar.pdi.demonstracao.services;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.criar.pdi.demonstracao.exceptions.Token.TokenValidationException;
+import com.criar.pdi.demonstracao.exceptions.ValidationExceptions.ValidationException;
 import com.criar.pdi.demonstracao.models.User.User;
 import org.springframework.beans.factory.annotation.Value;
 import com.auth0.jwt.JWT;
@@ -42,8 +45,11 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException exception){
-            throw  new RuntimeException(exception.getMessage());
+        } catch (TokenExpiredException e){
+            throw new TokenValidationException("TOKEN EXPIRADO EM: " + JWT.decode(token).getExpiresAt());
+        }
+         catch (JWTVerificationException exception){
+           throw new RuntimeException(exception.getMessage());
         }
     }
 

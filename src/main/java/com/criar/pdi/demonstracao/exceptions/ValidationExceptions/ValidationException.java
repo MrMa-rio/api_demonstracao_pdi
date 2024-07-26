@@ -1,7 +1,10 @@
 package com.criar.pdi.demonstracao.exceptions.ValidationExceptions;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
+import com.criar.pdi.demonstracao.exceptions.Token.TokenValidationException;
 import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -32,4 +35,10 @@ public class ValidationException {
 
         return ResponseEntity.ok(new ResponseBody(400, new MessageDTO("ERRO")));
     }
+    @ExceptionHandler(TokenValidationException.class)
+    public ResponseEntity<?> validation(JWTVerificationException ex){
+
+        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO("ERRO")));
+    }
+
 }
