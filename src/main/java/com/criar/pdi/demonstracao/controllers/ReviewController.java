@@ -28,9 +28,9 @@ public class ReviewController {
             return ResponseEntity.ok(new ResponseBody(200, reviewService.getReviewByID(reviewID)));
         } catch (ReviewNotFoundException e) {
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.status(404).body(responseBody);
         } catch (ReviewIdentifyException e) {
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
 
@@ -40,7 +40,7 @@ public class ReviewController {
             ReviewCommonDTO reviewCommonDTO = reviewService.setReview(reviewDTO);
             return ResponseEntity.ok(new ResponseBody(200, reviewCommonDTO));
         } catch (ReviewDuplicateDataException e) {
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +53,7 @@ public class ReviewController {
             ReviewCommonDTO reviewCommonDTO = reviewService.updateReview(reviewUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, reviewCommonDTO));
         } catch (ReviewNotFoundException e) {
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
@@ -67,9 +67,9 @@ public class ReviewController {
             reviewService.deleteReview(reviewID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("COMENTARIO INATIVADO COM SUCESSO!!")));
         } catch (ReviewNotFoundException e) {
-            return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (ReviewGenericException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }

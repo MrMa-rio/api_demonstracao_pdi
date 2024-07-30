@@ -28,59 +28,63 @@ public class ProductController {
     public ResponseEntity<?> getProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
-    ){
-        try{
+    ) {
+        try {
             Page<ProductCommonDTO> pages = productService.getProducts(page, size);
             return ResponseEntity.ok(pages);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 
     @GetMapping("/{productID}")
     public ResponseEntity<ResponseBody> getProduct(@PathVariable @Valid String productID) {
-        try{
+        try {
             return ResponseEntity.ok(new ResponseBody(200, productService.getStoreByID(productID)));
-        } catch (ProductNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (ProductIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (ProductIdentifyException e) {
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> setProduct(@RequestBody @Valid ProductDTO productDTO){
-        try{
+    public ResponseEntity<?> setProduct(@RequestBody @Valid ProductDTO productDTO) {
+        try {
             ProductCommonDTO productCommonDTO = productService.setProduct(productDTO);
             return ResponseEntity.ok(new ResponseBody(200, productCommonDTO));
-        }catch (ProductDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+        } catch (ProductDuplicateDataException e) {
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
-        catch (RuntimeException e){
-            throw new RuntimeException(e);
-        }
+//        catch (RuntimeException e){
+//            throw new RuntimeException(e);
+//        }
     }
+
     @PutMapping
     @Transactional
-    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductUpdateDTO productUpdateDTO){
-        try{
+    public ResponseEntity<?> updateProduct(@RequestBody @Valid ProductUpdateDTO productUpdateDTO) {
+        try {
             ProductCommonDTO productCommonDTO = productService.updateProduct(productUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, productCommonDTO));
-        } catch (ProductNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (RuntimeException e){
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }
+
     @DeleteMapping("/{productID}")
     public ResponseEntity<ResponseBody> deleteLogicalProduct(
             @PathVariable String productID
-    ){
-        try{
+    ) {
+        try {
             productService.deleteProduct(productID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("PRODUTO INATIVADO COM SUCESSO!!")));
-        } catch (ProductGenericException | ProductNotFoundException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (ProductGenericException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }

@@ -29,9 +29,9 @@ public class ShoppingCartController {
             return ResponseEntity.ok(new ResponseBody(200, shoppingCartService.getShoppingCartByID(shoppingCartID)));
         } catch (ShoppingCartNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.status(404).body(responseBody);
         } catch (ShoppingCartIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
     @GetMapping
@@ -52,7 +52,7 @@ public class ShoppingCartController {
             ShoppingCartCommonDTO shoppingCartCommonDTO = shoppingCartService.setShoppingCart(shoppingCartDTO);
             return ResponseEntity.ok(new ResponseBody(200, shoppingCartCommonDTO));
         }catch (ShoppingCartDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
         catch (RuntimeException e){
             throw new RuntimeException(e);
@@ -65,7 +65,7 @@ public class ShoppingCartController {
             ShoppingCartCommonDTO shoppingCartCommonDTO = shoppingCartService.updateShoppingCart(shoppingCartUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, shoppingCartCommonDTO));
         } catch (ShoppingCartNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
@@ -78,12 +78,12 @@ public class ShoppingCartController {
             shoppingCartService.deleteShoppingCart(shoppingCartID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("CARRINHO DE COMPRAS INATIVADO COM SUCESSO!!")));
         } catch (ShoppingCartNotFoundException e){
-            return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (ShoppingCartIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
         catch (ShoppingCartGenericException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }

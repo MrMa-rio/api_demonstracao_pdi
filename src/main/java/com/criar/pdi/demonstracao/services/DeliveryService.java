@@ -56,6 +56,7 @@ public class DeliveryService {
         } catch (NoSuchElementException e) {
             throw new DeliveryNotFoundException();
         } catch (RuntimeException e) {
+
             throw new RuntimeException(e);
         }
     }

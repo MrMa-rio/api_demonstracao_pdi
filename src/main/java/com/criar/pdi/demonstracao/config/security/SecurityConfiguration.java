@@ -2,7 +2,6 @@ package com.criar.pdi.demonstracao.config.security;
 
 
 import com.criar.pdi.demonstracao.components.Filters.FilterSecurity;
-import com.criar.pdi.demonstracao.components.Filters.TesteFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
     @Autowired
     private FilterSecurity filterSecurity;
-    @Autowired
-    private TesteFilter testeFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -35,7 +32,8 @@ public class SecurityConfiguration {
                     req.requestMatchers(HttpMethod.POST,"/auth/register").permitAll();
                     req.anyRequest().authenticated();
                 }).addFilterBefore(filterSecurity, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(testeFilter, FilterSecurity.class)
+                .exceptionHandling((exception) -> exception.accessDeniedHandler(new CustomAccessDeniedHandler())
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy((SessionCreationPolicy.STATELESS)))
                 .build();
     }

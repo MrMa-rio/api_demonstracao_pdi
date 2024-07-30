@@ -41,9 +41,9 @@ public class OrderController {
         try{
             return ResponseEntity.ok(new ResponseBody(200, orderService.getOrderByID(orderID)));
         } catch (OrderNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (OrderIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
 
@@ -53,11 +53,11 @@ public class OrderController {
             OrderCommonDTO orderCommonDTO = orderService.setOrder(orderDTO);
             return ResponseEntity.ok(new ResponseBody(200, orderCommonDTO));
         }catch (OrderDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
-        catch (RuntimeException e){
-            throw new RuntimeException(e);
-        }
+//        catch (RuntimeException e){
+//            throw new RuntimeException(e);
+//        }
     }
     @PutMapping
     @Transactional
@@ -66,7 +66,7 @@ public class OrderController {
             OrderCommonDTO orderCommonDTO = orderService.updateOrder(orderUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, orderCommonDTO));
         } catch (OrderNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
@@ -79,7 +79,7 @@ public class OrderController {
             orderService.deleteOrder(orderID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("PRODUTO INATIVADO COM SUCESSO!!")));
         } catch (OrderGenericException | OrderNotFoundException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }

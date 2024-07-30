@@ -29,9 +29,9 @@ public class AddressController {
             return ResponseEntity.ok(new ResponseBody(200, addressService.getAddressByID(addressID)));
         } catch (AddressNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.status(404).body(responseBody);
         } catch (AddressIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
     @PostMapping
@@ -40,7 +40,7 @@ public class AddressController {
             AddressCommonDTO addressCommonDTO = addressService.setAddress(addressDTO);
             return ResponseEntity.ok(new ResponseBody(200, addressCommonDTO));
         }catch (AddressDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
         catch (RuntimeException e){
             throw new RuntimeException(e);
@@ -53,7 +53,7 @@ public class AddressController {
             AddressCommonDTO addressCommonDTO = addressService.updateAddress(addressUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, addressCommonDTO));
         } catch (AddressNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
@@ -66,12 +66,12 @@ public class AddressController {
             addressService.deleteAddress(addressID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("ENDEREÇO INATIVADO COM SUCESSO!!")));
         } catch (AddressNotFoundException e){
-            return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (AddressIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
         catch (AddressGenericException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }

@@ -7,6 +7,7 @@ import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.Token.TokenValidationException;
 import jakarta.validation.UnexpectedTypeException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,12 +34,21 @@ public class ValidationException {
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<?> validation(InternalAuthenticationServiceException ex){
 
-        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO("ERRO")));
+        return ResponseEntity.status(401).body(new ResponseBody(401, new MessageDTO("ERRO")));
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> validation(BadCredentialsException ex){
+
+        return ResponseEntity.status(401).body(new ResponseBody(401, new MessageDTO("USUARIO E/OU SENHA INVALIDO")));
     }
     @ExceptionHandler(TokenValidationException.class)
     public ResponseEntity<?> validation(JWTVerificationException ex){
 
-        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO("ERRO")));
+        return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("ERRO")));
+    }
+    @ExceptionHandler(Error.class)
+    public ResponseEntity<ResponseBody> validation(){
+        return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("ERRO")));
     }
 
 }

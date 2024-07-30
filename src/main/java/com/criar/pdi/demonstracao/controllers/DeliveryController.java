@@ -28,9 +28,9 @@ public class DeliveryController {
             return ResponseEntity.ok(new ResponseBody(200, deliveryService.getDeliveryByID(deliveryID)));
         } catch (DeliveryNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.status(404).body(responseBody);
         } catch (DeliveryIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
     @PostMapping
@@ -39,7 +39,7 @@ public class DeliveryController {
             DeliveryCommonDTO deliveryCommonDTO = deliveryService.setDelivery(deliveryDTO);
             return ResponseEntity.ok(new ResponseBody(200, deliveryCommonDTO));
         }catch (DeliveryDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
         catch (RuntimeException e){
             throw new RuntimeException(e);
@@ -52,8 +52,11 @@ public class DeliveryController {
             DeliveryCommonDTO deliveryCommonDTO = deliveryService.updateDelivery(deliveryUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, deliveryCommonDTO));
         } catch (DeliveryNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (RuntimeException e){
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (DeliveryIdentifyException e){
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
+        }
+        catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }
@@ -65,12 +68,12 @@ public class DeliveryController {
             deliveryService.deleteDelivery(deliveryID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("ENTREGA INATIVADA COM SUCESSO!!")));
         } catch (DeliveryNotFoundException e){
-            return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (DeliveryIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
         catch (DeliveryGenericException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }

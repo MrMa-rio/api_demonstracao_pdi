@@ -2,9 +2,10 @@ package com.criar.pdi.demonstracao.services;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.criar.pdi.demonstracao.exceptions.Token.TokenValidationException;
-import com.criar.pdi.demonstracao.exceptions.ValidationExceptions.ValidationException;
 import com.criar.pdi.demonstracao.models.User.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -40,17 +41,28 @@ public class TokenService {
 
         try {
             Algorithm algorithm = Algorithm.HMAC512(secretKey);
-            return JWT.require(algorithm)
-                    .withIssuer("API Demonstração")
-                    .build()
-                    .verify(token)
+            return verify(token)
                     .getSubject();
-        } catch (TokenExpiredException e){
+        } catch (TokenExpiredException e) {
             throw new TokenValidationException("TOKEN EXPIRADO EM: " + JWT.decode(token).getExpiresAt());
-        }
-         catch (JWTVerificationException exception){
+        } catch (JWTVerificationException exception){
            throw new RuntimeException(exception.getMessage());
         }
+    }
+    public DecodedJWT verify(String token){
+        Algorithm algorithm = Algorithm.HMAC512(secretKey);
+        return JWT.require(algorithm)
+                .withIssuer("API Demonstração")
+                .build()
+                .verify(token);
+    }
+
+    public String getToken(HttpServletRequest request) {
+        String authorizationToken = request.getHeader("Authorization");
+        if (authorizationToken != null) {
+            return authorizationToken.replace("Bearer", "");
+        }
+        return "";
     }
 
     public Claim getClaim(String claim, String token){
@@ -69,7 +81,7 @@ public class TokenService {
 
     public Instant dataExpirate(){
         return LocalDateTime.now()
-                .plusHours(2)
+                .plusSeconds(2)
                 .toInstant(ZoneOffset.of("-03:00"));
     }
 }

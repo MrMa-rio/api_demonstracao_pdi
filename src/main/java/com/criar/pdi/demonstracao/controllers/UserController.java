@@ -29,9 +29,9 @@ public class UserController {
             return ResponseEntity.ok(new ResponseBody(200, userService.getUserByID(userID)));
         } catch (UserNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.status(404).body(responseBody);
         } catch (UserIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
     @GetMapping
@@ -43,7 +43,7 @@ public class UserController {
             Page<UserCommonDTO> pages = userService.getUsers(page, size);
             return ResponseEntity.ok(pages);
         } catch (UserNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
@@ -54,7 +54,7 @@ public class UserController {
             UserCommonDTO userCommonDTO = userService.setUser(userDTO);
             return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
         }catch (UserDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
         catch (RuntimeException e){
             throw new RuntimeException(e);
@@ -67,7 +67,7 @@ public class UserController {
             UserCommonDTO userCommonDTO = userService.updateUser(userUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
         } catch (UserNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
@@ -80,7 +80,7 @@ public class UserController {
             userService.deleteUser(userID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("Usuario inativado com sucesso!!")));
         } catch (UserNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("Erro ao inativar usuario!!")));
         }

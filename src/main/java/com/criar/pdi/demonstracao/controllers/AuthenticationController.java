@@ -38,10 +38,7 @@ public class AuthenticationController {
             TokenDTO tokenDTO = new TokenDTO(tokenService.generate((User) auth.getPrincipal()));
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(tokenDTO)));
         }catch (InternalAuthenticationServiceException e){
-            return ResponseEntity.ok(new ResponseBody(403, new MessageDTO("EMAIL E/OU SENHA INVALIDOS")));
-        }
-        catch (RuntimeException e){
-            return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            throw new InternalAuthenticationServiceException(e.getMessage());
         }
     }
 }

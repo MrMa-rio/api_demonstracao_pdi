@@ -28,9 +28,9 @@ public class PaymentController {
             return ResponseEntity.ok(new ResponseBody(200, paymentService.getPaymentByID(paymentID)));
         } catch (PaymentNotFoundException e){
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.ok(responseBody);
+            return ResponseEntity.status(404).body(responseBody);
         } catch (PaymentIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
 //    @GetMapping("/cart/{paymentID}")
@@ -50,7 +50,7 @@ public class PaymentController {
             PaymentCommonDTO paymentCommonDTO = paymentService.setPayment(paymentDTO);
             return ResponseEntity.ok(new ResponseBody(200, paymentCommonDTO));
         }catch (PaymentDuplicateDataException e){
-            return ResponseEntity.ok(new ResponseBody(409, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         }
         catch (RuntimeException e){
             throw new RuntimeException(e);
@@ -63,7 +63,7 @@ public class PaymentController {
             PaymentCommonDTO paymentCommonDTO = paymentService.updatePayment(paymentUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, paymentCommonDTO));
         } catch (PaymentNotFoundException e){
-            return ResponseEntity.ok(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
@@ -76,12 +76,12 @@ public class PaymentController {
             paymentService.deletePayment(paymentID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("PAGAMENTO INATIVADO COM SUCESSO!!")));
         } catch (PaymentNotFoundException e){
-            return ResponseEntity.ok().body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (PaymentIdentifyException e){
-            return ResponseEntity.ok(new ResponseBody(422, new MessageDTO(e.getMessage())));
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
         catch (PaymentGenericException e){
-            return ResponseEntity.ok().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 }
