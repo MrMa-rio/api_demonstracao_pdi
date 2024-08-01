@@ -40,7 +40,6 @@ public class TokenService {
     public String getSubject(String token){
 
         try {
-            Algorithm algorithm = Algorithm.HMAC512(secretKey);
             return verify(token)
                     .getSubject();
         } catch (TokenExpiredException e) {
@@ -81,7 +80,7 @@ public class TokenService {
 
     public Instant dataExpirate(){
         return LocalDateTime.now()
-                .plusSeconds(2)
+                .plusMinutes(2)
                 .toInstant(ZoneOffset.of("-03:00"));
     }
 }
