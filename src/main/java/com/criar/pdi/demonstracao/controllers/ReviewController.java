@@ -10,6 +10,8 @@ import com.criar.pdi.demonstracao.exceptions.Review.ReviewGenericException.Revie
 import com.criar.pdi.demonstracao.exceptions.Review.ReviewIdentifyException.ReviewIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Review.ReviewNotFoundException.ReviewNotFoundException;
 import com.criar.pdi.demonstracao.services.ReviewService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/review")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Review")
 public class ReviewController {
     @Autowired
     ReviewService reviewService;

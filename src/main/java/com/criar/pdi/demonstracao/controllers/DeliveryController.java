@@ -10,6 +10,8 @@ import com.criar.pdi.demonstracao.exceptions.Delivery.DeliveryGenericException.D
 import com.criar.pdi.demonstracao.exceptions.Delivery.DeliveryIdentifyException.DeliveryIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Delivery.DeliveryNotFoundException.DeliveryNotFoundException;
 import com.criar.pdi.demonstracao.services.DeliveryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/delivery")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Delivery")
 public class DeliveryController {
     @Autowired
     private DeliveryService deliveryService;

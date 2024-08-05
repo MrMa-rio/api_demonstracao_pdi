@@ -11,6 +11,8 @@ import com.criar.pdi.demonstracao.exceptions.Address.AddressGenericException.Add
 import com.criar.pdi.demonstracao.exceptions.Address.AddressIdentifyException.AddressIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Address.AddressNotFoundException.AddressNotFoundException;
 import com.criar.pdi.demonstracao.services.AddressService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/address")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Address")
 public class AddressController {
     @Autowired
     private AddressService addressService;

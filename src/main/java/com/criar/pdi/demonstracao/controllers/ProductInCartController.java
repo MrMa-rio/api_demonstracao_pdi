@@ -10,6 +10,8 @@ import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartGenericE
 import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartIdentifyException.ProductInCartIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartNotFoundException.ProductInCartNotFoundException;
 import com.criar.pdi.demonstracao.services.ProductInCartService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/product-in-cart")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Product In Cart")
 public class ProductInCartController {
     @Autowired
     private ProductInCartService productInCartService;

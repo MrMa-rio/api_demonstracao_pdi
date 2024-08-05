@@ -31,7 +31,6 @@ public class User implements UserDetails {
     private LocalDateTime updatedDate;
     private LocalDateTime exclusionDate;
     private  UserAccessLevel userAccessLevel;
-    
 
     public User(UserDTO userDTO) {
         this.ID = userDTO.ID();

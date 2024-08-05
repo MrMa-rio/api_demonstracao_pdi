@@ -10,6 +10,8 @@ import com.criar.pdi.demonstracao.exceptions.Payment.PaymentGenericException.Pay
 import com.criar.pdi.demonstracao.exceptions.Payment.PaymentIdentifyException.PaymentIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Payment.PaymentNotFoundException.PaymentNotFoundException;
 import com.criar.pdi.demonstracao.services.PaymentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Payments")
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;

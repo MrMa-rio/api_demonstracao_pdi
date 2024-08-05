@@ -10,6 +10,9 @@ import com.criar.pdi.demonstracao.exceptions.ShoppingCart.ShoppingCartGenericExc
 import com.criar.pdi.demonstracao.exceptions.ShoppingCart.ShoppingCartIdentifyException.ShoppingCartIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.ShoppingCart.ShoppingCartNotFoundException.ShoppingCartNotFoundException;
 import com.criar.pdi.demonstracao.services.ShoppingCartService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +22,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shopping-cart")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Shopping Cart")
 public class ShoppingCartController {
     @Autowired
     private ShoppingCartService shoppingCartService;
 
     @GetMapping("/{shoppingCartID}")
+    @Operation(description = "Pega um Carrinho atraves do ID")
     public ResponseEntity<?> getShoppingCart(@PathVariable String shoppingCartID){
         try{
             return ResponseEntity.ok(new ResponseBody(200, shoppingCartService.getShoppingCartByID(shoppingCartID)));
@@ -35,6 +41,7 @@ public class ShoppingCartController {
         }
     }
     @GetMapping
+    @Operation(description = "Pega uma lista paginada de Carrinhos")
     public ResponseEntity<?> getShoppingCarts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -47,6 +54,7 @@ public class ShoppingCartController {
         }
     }
     @PostMapping
+    @Operation(description = "Cria um novo Carrinho")
     public ResponseEntity<?> setShoppingCart(@RequestBody @Valid ShoppingCartDTO shoppingCartDTO){
         try{
             ShoppingCartCommonDTO shoppingCartCommonDTO = shoppingCartService.setShoppingCart(shoppingCartDTO);
@@ -60,6 +68,7 @@ public class ShoppingCartController {
     }
     @PutMapping
     @Transactional
+    @Operation(description = "Atualiza um Carrinho")
     public ResponseEntity<?> updateShoppingCart(@RequestBody @Valid ShoppingCartUpdateDTO shoppingCartUpdateDTO){
         try{
             ShoppingCartCommonDTO shoppingCartCommonDTO = shoppingCartService.updateShoppingCart(shoppingCartUpdateDTO);
@@ -71,6 +80,7 @@ public class ShoppingCartController {
         }
     }
     @DeleteMapping("/{shoppingCartID}")
+    @Operation(description = "Inativa um Carrinho atraves do ID")
     public ResponseEntity<ResponseBody> deleteLogicalShoppingCart(
             @PathVariable String shoppingCartID
     ){

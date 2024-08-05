@@ -10,6 +10,9 @@ import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGe
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
 import com.criar.pdi.demonstracao.services.StoreService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +22,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/store")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Store")
 public class StoreController {
 
     @Autowired
     private StoreService storeService;
 
     @GetMapping("/{storeID}")
+    @Operation(description = "Pega uma Loja atraves do ID")
     public ResponseEntity<?> getStore(@PathVariable String storeID){
         try{
             return ResponseEntity.ok(new ResponseBody(200, storeService.getStoreByID(storeID)));
@@ -36,6 +42,7 @@ public class StoreController {
         }
     }
     @GetMapping
+    @Operation(description = "Pega uma lista paginada de Lojas")
     public ResponseEntity<?> getStores(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
@@ -48,6 +55,7 @@ public class StoreController {
         }
     }
     @PostMapping
+    @Operation(description = "Cria uma nova Loja")
     public ResponseEntity<?> setStore(@RequestBody @Valid StoreDTO storeDTO){
         try{
             StoreCommonDTO storeCommonDTO = storeService.setStore(storeDTO);
@@ -61,6 +69,7 @@ public class StoreController {
     }
     @PutMapping
     @Transactional
+    @Operation(description = "Atualiza uma Loja")
     public ResponseEntity<?> updateStore(@RequestBody @Valid StoreUpdateDTO storeUpdateDTO){
         try{
             StoreCommonDTO storeCommonDTO = storeService.updateStore(storeUpdateDTO);
@@ -72,6 +81,7 @@ public class StoreController {
         }
     }
     @DeleteMapping("/{storeID}")
+    @Operation(description = "Inativa uma Loja atraves do ID")
     public ResponseEntity<ResponseBody> deleteLogicalStore(
             @PathVariable String storeID
     ){

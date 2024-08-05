@@ -22,33 +22,35 @@ public class TokenService {
     @Value("${api.services.TokenServices.secretKey}")
     private String secretKey;
 
-    public String generate(User user){
+    public String generate(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC512(secretKey);
             return JWT.create()
                     .withIssuer("API Demonstração")
                     .withSubject(user.getUsername())
-                    .withClaim("email",user.getUsername())
-                    .withClaim("id",user.getCommonDTO().ID())
+                    .withClaim("email", user.getUsername())
+                    .withClaim("id", user.getCommonDTO().ID())
                     .withExpiresAt(dataExpirate())
                     .sign(algorithm);
-        } catch (JWTCreationException exception){
-            throw  new RuntimeException("ERRO AO GERAR TOKEN",exception);
+        } catch (JWTCreationException exception) {
+            throw new RuntimeException("ERRO AO GERAR TOKEN", exception);
         }
     }
 
-    public String getSubject(String token){
+    public String getSubject(String token) {
 
         try {
             return verify(token)
                     .getSubject();
         } catch (TokenExpiredException e) {
             throw new TokenValidationException("TOKEN EXPIRADO EM: " + JWT.decode(token).getExpiresAt());
-        } catch (JWTVerificationException exception){
-           throw new RuntimeException(exception.getMessage());
+        } catch (JWTVerificationException exception) {
+            System.out.println(token);
+            throw new RuntimeException(exception.getMessage());
         }
     }
-    public DecodedJWT verify(String token){
+
+    public DecodedJWT verify(String token) {
         Algorithm algorithm = Algorithm.HMAC512(secretKey);
         return JWT.require(algorithm)
                 .withIssuer("API Demonstração")
@@ -59,12 +61,12 @@ public class TokenService {
     public String getToken(HttpServletRequest request) {
         String authorizationToken = request.getHeader("Authorization");
         if (authorizationToken != null) {
-            return authorizationToken.replace("Bearer", "");
+            return authorizationToken.replace("Bearer", "").trim();
         }
         return "";
     }
 
-    public Claim getClaim(String claim, String token){
+    public Claim getClaim(String claim, String token) {
 
         try {
             Algorithm algorithm = Algorithm.HMAC512(secretKey);
@@ -73,14 +75,14 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getClaim(claim);
-        } catch (JWTVerificationException exception){
-            throw  new RuntimeException(exception.getMessage());
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException(exception.getMessage());
         }
     }
 
-    public Instant dataExpirate(){
+    public Instant dataExpirate() {
         return LocalDateTime.now()
-                .plusMinutes(2)
+                .plusMinutes(20)
                 .toInstant(ZoneOffset.of("-03:00"));
     }
 }

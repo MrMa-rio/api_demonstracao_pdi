@@ -10,6 +10,8 @@ import com.criar.pdi.demonstracao.exceptions.Order.OrderGenericException.OrderGe
 import com.criar.pdi.demonstracao.exceptions.Order.OrderIdentifyException.OrderIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Order.OrderNotFoundException.OrderNotFoundException;
 import com.criar.pdi.demonstracao.services.OrderService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
+@SecurityRequirement(name = "bearer-key")
+@Tag(name = "Order")
 public class OrderController {
     @Autowired
     OrderService orderService;
