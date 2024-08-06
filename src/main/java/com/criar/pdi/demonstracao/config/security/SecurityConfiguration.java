@@ -44,6 +44,15 @@ public class SecurityConfiguration {
                     req.requestMatchers("/swagger-ui/**").permitAll();
                     req.requestMatchers("/v3/api-docs/**").permitAll();
                     req.requestMatchers(HttpMethod.POST,"/auth/register").permitAll();
+                    req.requestMatchers("/**").hasAnyRole("ADMINISTRADOR", "PROPRIETARIO");
+                    req.requestMatchers(HttpMethod.GET,
+                            "/user/**",
+                            "/store/**",
+                            "/review/**",
+                            "/product/**",
+                            "/shopping-cart/**",
+                            "/product-in-cart/**").hasRole("CLIENTE");
+                    req.requestMatchers(HttpMethod.POST, "/user/**", "/review/**", "/order/**").hasRole("CLIENTE");
                     req.anyRequest().authenticated();
                 }).addFilterBefore(filterSecurity, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((exception) -> {

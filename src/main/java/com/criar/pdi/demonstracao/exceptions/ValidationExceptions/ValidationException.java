@@ -34,7 +34,7 @@ public class ValidationException {
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public ResponseEntity<?> validation(InternalAuthenticationServiceException ex){
 
-        return ResponseEntity.status(401).body(new ResponseBody(401, new MessageDTO("ERRO")));
+        return ResponseEntity.status(401).body(new ResponseBody(401, new MessageDTO("OCORREU UM ERRO NA OPERACAO: " + ex.getMessage())));
     }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> validation(BadCredentialsException ex){
@@ -44,11 +44,11 @@ public class ValidationException {
     @ExceptionHandler(TokenValidationException.class)
     public ResponseEntity<?> validation(JWTVerificationException ex){
 
-        return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("ERRO")));
+        return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("OCORREU UM ERRO NA OPERACAO: " + ex.getMessage())));
     }
     @ExceptionHandler(Error.class)
-    public ResponseEntity<ResponseBody> validation(){
-        return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("ERRO")));
+    public ResponseEntity<ResponseBody> validation(Error ex){
+        return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("OCORREU UM ERRO NA OPERACAO: " + ex.getMessage())));
     }
 
 }

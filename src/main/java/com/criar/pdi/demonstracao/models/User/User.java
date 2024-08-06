@@ -7,11 +7,13 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Table(name = "users_tbl")
 @Entity
@@ -30,7 +32,7 @@ public class User implements UserDetails {
     private LocalDateTime inclusionDate;
     private LocalDateTime updatedDate;
     private LocalDateTime exclusionDate;
-    private  UserAccessLevel userAccessLevel;
+    private UserAccessLevel userAccessLevel;
 
     public User(UserDTO userDTO) {
         this.ID = userDTO.ID();
@@ -97,6 +99,13 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(userAccessLevel == UserAccessLevel.ADMINISTRADOR){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMINISTRADOR"),new SimpleGrantedAuthority("ROLE_PROPRIETARIO"), new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        } else if (userAccessLevel == UserAccessLevel.PROPRIETARIO) {
+            return List.of(new SimpleGrantedAuthority("ROLE_PROPRIETARIO"), new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        } else if (userAccessLevel == UserAccessLevel.CLIENTE) {
+            return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        }
         return null;
     }
 

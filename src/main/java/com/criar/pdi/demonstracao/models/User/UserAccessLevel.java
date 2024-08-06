@@ -5,16 +5,16 @@ public enum UserAccessLevel {
     PROPRIETARIO(1, "PROPRIETARIO"),
     ADMINISTRADOR(2, "ADMINISTRADOR");
     private Integer code;
-
-    public Integer getCode() {
+    private String value;
+    public Integer code() {
         return code;
     }
 
-    public String getValue() {
+    public String value() {
         return value;
     }
 
-    private String value;
+
 
 
     UserAccessLevel(Integer code, String value){
