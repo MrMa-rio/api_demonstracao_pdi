@@ -30,6 +30,7 @@ public class TokenService {
                     .withSubject(user.getUsername())
                     .withClaim("email", user.getUsername())
                     .withClaim("id", user.getCommonDTO().ID())
+                    .withClaim("role", user.getCommonDTO().userAccessLevel().value())
                     .withExpiresAt(dataExpirate())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
