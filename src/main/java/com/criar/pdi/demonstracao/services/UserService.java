@@ -8,6 +8,7 @@ import com.criar.pdi.demonstracao.exceptions.User.UserGenericException.UserGener
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;
 import com.criar.pdi.demonstracao.models.User.User;
+import com.criar.pdi.demonstracao.models.User.UserAccessLevel;
 import com.criar.pdi.demonstracao.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -41,6 +44,21 @@ public class UserService {
     public Page<UserCommonDTO> getUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = iUserRepository.findAll(pageable);
+        List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
+                .map(User::getCommonDTO).toList();
+        return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
+    }
+
+    public Page<UserCommonDTO> getUsersByName(int page, int size, String name){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = iUserRepository.findAllByNameContains(name, pageable);
+        List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
+                .map(User::getCommonDTO).toList();
+        return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
+    }
+    public Page<UserCommonDTO> getUsersByUserAccessLevel(int page, int size, String userAccessLevel){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = iUserRepository.findAllByUserAccessLevel(UserAccessLevel.get(Integer.valueOf(userAccessLevel)), pageable); //refatorar
         List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
                 .map(User::getCommonDTO).toList();
         return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());

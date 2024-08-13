@@ -40,14 +40,40 @@ public class UserController {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
+//    @GetMapping
+//    @Operation(description = "Pega uma lista paginada de Usuarios")
+//    public ResponseEntity<?> getUsers(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size
+//    ){
+//        try{
+//            Page<UserCommonDTO> pages = userService.getUsers(page, size);
+//            return ResponseEntity.ok(pages);
+//        } catch (UserNotFoundException e){
+//            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+//        } catch (RuntimeException e){
+//            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+//        }
+//    }
     @GetMapping
-    @Operation(description = "Pega uma lista paginada de Usuarios")
+    @Operation(description = "Pega uma lista paginada de Usuarios por Parametros")
     public ResponseEntity<?> getUsers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String userAccessLevel
+
     ){
         try{
-            Page<UserCommonDTO> pages = userService.getUsers(page, size);
+            Page<UserCommonDTO> pages = Page.empty();
+            if((name.isEmpty() && userAccessLevel.toString().isEmpty())){
+                pages = userService.getUsers(page, size);
+            }
+            else if(!name.isEmpty()){
+                pages = userService.getUsersByName(page, size, name);
+            } else if (!userAccessLevel.toString().isEmpty()) {
+                pages = userService.getUsersByUserAccessLevel(page, size, userAccessLevel); //refatorar
+            }
             return ResponseEntity.ok(pages);
         } catch (UserNotFoundException e){
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
@@ -55,6 +81,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
+
     @PostMapping
     @Operation(description = "Cria um novo Usuario")
     public ResponseEntity<?> setUser(@RequestBody @Valid UserDTO userDTO){
