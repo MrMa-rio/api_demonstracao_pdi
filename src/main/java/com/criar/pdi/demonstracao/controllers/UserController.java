@@ -66,14 +66,20 @@ public class UserController {
     ){
         try{
             Page<UserCommonDTO> pages = Page.empty();
-            if((name.isEmpty() && userAccessLevel.toString().isEmpty())){
-                pages = userService.getUsers(page, size);
+
+            if(!name.isBlank() && !userAccessLevel.isBlank()) {
+                pages = userService.getUsersByNameAndUserAccessLevel(page, size, name, userAccessLevel);
             }
-            else if(!name.isEmpty()){
+            else if(!name.isEmpty() && userAccessLevel.isEmpty()) {
                 pages = userService.getUsersByName(page, size, name);
-            } else if (!userAccessLevel.toString().isEmpty()) {
+            }
+            else if (!userAccessLevel.isEmpty() && name.isEmpty()) {
                 pages = userService.getUsersByUserAccessLevel(page, size, userAccessLevel); //refatorar
             }
+            else {
+                pages = userService.getUsers(page, size);
+            }
+
             return ResponseEntity.ok(pages);
         } catch (UserNotFoundException e){
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));

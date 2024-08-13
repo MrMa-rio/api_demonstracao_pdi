@@ -64,6 +64,14 @@ public class UserService {
         return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
     }
 
+    public Page<UserCommonDTO> getUsersByNameAndUserAccessLevel(int page, int size,String name, String userAccessLevel){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = iUserRepository.findAllByNameContainsAndUserAccessLevel(name, UserAccessLevel.get(Integer.valueOf(userAccessLevel)), pageable); //refatorar
+        List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
+                .map(User::getCommonDTO).toList();
+        return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
+    }
+
     public UserCommonDTO setUser(UserDTO userDTO) {
         try {
             User user = new User(userDTO);

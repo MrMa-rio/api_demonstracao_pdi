@@ -14,4 +14,6 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     UserDetails findByEmail(String email);
     Page<User> findAllByNameContains(String name, Pageable pageable);
     Page<User> findAllByUserAccessLevel(UserAccessLevel userAccessLevel, Pageable pageable);
+    Page<User> findAllByNameContainsAndUserAccessLevel(String name, UserAccessLevel userAccessLevel, Pageable pageable);
+
 }
