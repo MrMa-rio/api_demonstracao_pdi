@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -49,14 +48,15 @@ public class UserService {
         return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
     }
 
-    public Page<UserCommonDTO> getUsersByName(int page, int size, String name){
+    public Page<UserCommonDTO> getUsersByName(int page, int size, String name) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = iUserRepository.findAllByNameContains(name, pageable);
         List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
                 .map(User::getCommonDTO).toList();
         return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
     }
-    public Page<UserCommonDTO> getUsersByUserAccessLevel(int page, int size, String userAccessLevel){
+
+    public Page<UserCommonDTO> getUsersByUserAccessLevel(int page, int size, String userAccessLevel) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = iUserRepository.findAllByUserAccessLevel(UserAccessLevel.get(Integer.valueOf(userAccessLevel)), pageable); //refatorar
         List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
@@ -64,7 +64,7 @@ public class UserService {
         return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
     }
 
-    public Page<UserCommonDTO> getUsersByNameAndUserAccessLevel(int page, int size,String name, String userAccessLevel){
+    public Page<UserCommonDTO> getUsersByNameAndUserAccessLevel(int page, int size, String name, String userAccessLevel) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = iUserRepository.findAllByNameContainsAndUserAccessLevel(name, UserAccessLevel.get(Integer.valueOf(userAccessLevel)), pageable); //refatorar
         List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
@@ -80,11 +80,11 @@ public class UserService {
             return user.getCommonDTO();
         } catch (DataIntegrityViolationException e) {
             throw new UserDuplicateDataException();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
+
     public UserCommonDTO updateUser(UserUpdateDTO userUpdateDTO) {
         try {
             User user = iUserRepository.findById(Integer.valueOf(userUpdateDTO.ID())).orElseThrow();
@@ -97,18 +97,18 @@ public class UserService {
             throw new RuntimeException(e);
         }
     }
-    public void deleteUser(String userID){
-        try{
+
+    public void deleteUser(String userID) {
+        try {
             User user = iUserRepository.findById(Integer.valueOf(userID)).orElseThrow();
-            if(user.isInactive()){
+            if (user.isInactive()) {
                 throw new UserGenericException("ESTE USUARIO JA ESTA INATIVADO!!");
             }
             user.setExclusionDate();
             iUserRepository.saveAndFlush(user);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             throw new UserNotFoundException();
-        }
-        catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }

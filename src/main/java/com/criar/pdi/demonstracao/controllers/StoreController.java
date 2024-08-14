@@ -45,10 +45,14 @@ public class StoreController {
     @Operation(description = "Pega uma lista paginada de Lojas")
     public ResponseEntity<?> getStores(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String owner,
+            @RequestParam(defaultValue = "") String cnpj,
+            @RequestParam(defaultValue = "") String region
     ){
         try{
-            Page<StoreCommonDTO> pages = storeService.getStores(page, size);
+            Page<StoreCommonDTO> pages = storeService.getStores(page, size, name, owner, region, cnpj);
             return ResponseEntity.ok(pages);
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));

@@ -30,17 +30,18 @@ public class UserController {
 
     @GetMapping("/{userID}")
     @Operation(description = "Pega um Usuario atraves do ID")
-    public ResponseEntity<?> getUser(@PathVariable String userID){
-        try{
+    public ResponseEntity<?> getUser(@PathVariable String userID) {
+        try {
             return ResponseEntity.ok(new ResponseBody(200, userService.getUserByID(userID)));
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
             return ResponseEntity.status(404).body(responseBody);
-        } catch (UserIdentifyException e){
+        } catch (UserIdentifyException e) {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
-//    @GetMapping
+
+    //    @GetMapping
 //    @Operation(description = "Pega uma lista paginada de Usuarios")
 //    public ResponseEntity<?> getUsers(
 //            @RequestParam(defaultValue = "0") int page,
@@ -63,68 +64,66 @@ public class UserController {
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String userAccessLevel
 
-    ){
-        try{
+    ) {
+        try {
             Page<UserCommonDTO> pages = Page.empty();
 
-            if(!name.isBlank() && !userAccessLevel.isBlank()) {
+            if (!name.isBlank() && !userAccessLevel.isBlank()) {
                 pages = userService.getUsersByNameAndUserAccessLevel(page, size, name, userAccessLevel);
-            }
-            else if(!name.isEmpty() && userAccessLevel.isEmpty()) {
+            } else if (!name.isEmpty() && userAccessLevel.isEmpty()) {
                 pages = userService.getUsersByName(page, size, name);
-            }
-            else if (!userAccessLevel.isEmpty() && name.isEmpty()) {
+            } else if (!userAccessLevel.isEmpty() && name.isEmpty()) {
                 pages = userService.getUsersByUserAccessLevel(page, size, userAccessLevel); //refatorar
-            }
-            else {
+            } else {
                 pages = userService.getUsers(page, size);
             }
 
             return ResponseEntity.ok(pages);
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
 
     @PostMapping
     @Operation(description = "Cria um novo Usuario")
-    public ResponseEntity<?> setUser(@RequestBody @Valid UserDTO userDTO){
-        try{
+    public ResponseEntity<?> setUser(@RequestBody @Valid UserDTO userDTO) {
+        try {
             UserCommonDTO userCommonDTO = userService.setUser(userDTO);
             return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
-        }catch (UserDuplicateDataException e){
+        } catch (UserDuplicateDataException e) {
             return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
-        }
-        catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping
     @Transactional
     @Operation(description = "Atualiza um Usuario")
-    public ResponseEntity<?> updateUser(@RequestBody @Valid UserUpdateDTO userUpdateDTO){
-        try{
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UserUpdateDTO userUpdateDTO) {
+        try {
             UserCommonDTO userCommonDTO = userService.updateUser(userUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, userCommonDTO));
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
     }
+
     @DeleteMapping("/{userID}")
     @Operation(description = "Inativa um Usuario atraves do ID")
     public ResponseEntity<ResponseBody> deleteLogicalUser(
             @PathVariable String userID
-    ){
-        try{
+    ) {
+        try {
             userService.deleteUser(userID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("Usuario inativado com sucesso!!")));
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO("Erro ao inativar usuario!!")));
         }
     }
