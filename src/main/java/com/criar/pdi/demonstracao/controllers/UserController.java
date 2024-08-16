@@ -40,22 +40,6 @@ public class UserController {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
-
-    //    @GetMapping
-//    @Operation(description = "Pega uma lista paginada de Usuarios")
-//    public ResponseEntity<?> getUsers(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "10") int size
-//    ){
-//        try{
-//            Page<UserCommonDTO> pages = userService.getUsers(page, size);
-//            return ResponseEntity.ok(pages);
-//        } catch (UserNotFoundException e){
-//            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-//        } catch (RuntimeException e){
-//            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
-//        }
-//    }
     @GetMapping
     @Operation(description = "Pega uma lista paginada de Usuarios por Parametros")
     public ResponseEntity<?> getUsers(
@@ -66,18 +50,7 @@ public class UserController {
 
     ) {
         try {
-            Page<UserCommonDTO> pages = Page.empty();
-
-            if (!name.isBlank() && !userAccessLevel.isBlank()) {
-                pages = userService.getUsersByNameAndUserAccessLevel(page, size, name, userAccessLevel);
-            } else if (!name.isEmpty() && userAccessLevel.isEmpty()) {
-                pages = userService.getUsersByName(page, size, name);
-            } else if (!userAccessLevel.isEmpty() && name.isEmpty()) {
-                pages = userService.getUsersByUserAccessLevel(page, size, userAccessLevel); //refatorar
-            } else {
-                pages = userService.getUsers(page, size);
-            }
-
+            Page<UserCommonDTO> pages = userService.getUsers(page, size);
             return ResponseEntity.ok(pages);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));

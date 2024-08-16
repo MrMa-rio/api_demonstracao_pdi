@@ -65,31 +65,6 @@ public class StoreService {
         return page;
     }
 
-    public Page<StoreCommonDTO> getStoresByName(int page, int size, String name) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Store> storePage = iStoreRepository.findAllByNameContains(name, pageable); //refatorar
-        return page(storePage, pageable);
-    }
-
-    public Page<StoreCommonDTO> getStoresByCnpj(int page, int size, String cnpj) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Store> storePage = iStoreRepository.findAllByCnpjContains(cnpj, pageable); //refatorar
-        return page(storePage, pageable);
-    }
-
-    public Page<StoreCommonDTO> getStoresByOwnerID(int page, int size, String ownerID) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Store> storePage = iStoreRepository.findAllByOwnerID(ownerID, pageable); //refatorar
-        return page(storePage, pageable);
-    }
-
-    public Page<StoreCommonDTO> getStoresByRegion(int page, int size, String region) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Store> storePage = iStoreRepository.findAllByRegion(region, pageable); //refatorar
-        return page(storePage, pageable);
-    }
-
-
     public StoreCommonDTO setStore(StoreDTO storeDTO) {
         try {
             Store store = new Store(storeDTO);
