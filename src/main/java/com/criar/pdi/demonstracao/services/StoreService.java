@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -42,27 +43,29 @@ public class StoreService {
         }
     }
 
-    private Page<StoreCommonDTO> page(Page<Store> storePage, Pageable pageable) {
-        List<StoreCommonDTO> storeCommonDTOList = storePage.getContent().stream()
+    private Page<StoreCommonDTO> page(List<Store> storePage, Pageable pageable) {
+        List<StoreCommonDTO> storeCommonDTOList = storePage.stream()
                 .map(Store::getCommonDTO).toList();
-        return new PageImpl<>(storeCommonDTOList, pageable, storePage.getTotalElements());
+        return new PageImpl<>(storeCommonDTOList, pageable, storePage.size());
     }
 
-    public Page<StoreCommonDTO> getStores(int page, int size, String name, String ownerID, String region, String cnpj) {
+//    public Page<StoreCommonDTO> getStores(int page, int size, String name, String ownerID, String region, String cnpj) {
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        Page<Store> storePage  = getStoresByParams(name, ownerID, region, cnpj, pageable);
+//        if(storePage.isEmpty())  storePage = iStoreRepository.findAll(pageable);
+//        return page(storePage, pageable);
+//    }
+
+    public Page<StoreCommonDTO> getStoresByParams(int page, int size, String name, String ownerID, String description, String address, String region, String cnpj) { //TODO encapsular em uma DTO
         Pageable pageable = PageRequest.of(page, size);
+        ownerID = ownerID.isEmpty() ? null : ownerID;
+        address = address.isEmpty() ? null : address;
+        region = region.isEmpty() ? null : region; // refatorar DTO
 
-        Page<Store> storePage  = getStoresByParams(name, ownerID, region, cnpj, pageable);
-        if(storePage.isEmpty())  storePage = iStoreRepository.findAll(pageable);
+        List<Store> storePage = iStoreRepository.searchStoresByParams(name, ownerID, description, address, region, cnpj);
+
         return page(storePage, pageable);
-    }
-
-    private Page<Store> getStoresByParams(String name, String ownerID, String region, String cnpj, Pageable pageable){
-        Page<Store> page = Page.empty();
-        if(!name.isEmpty()){
-            page = iStoreRepository.findAllByNameContains(name, pageable); //refatorar
-        }
-
-        return page;
     }
 
     public StoreCommonDTO setStore(StoreDTO storeDTO) {

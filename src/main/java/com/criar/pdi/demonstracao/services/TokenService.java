@@ -83,7 +83,7 @@ public class TokenService {
 
     public Instant dataExpirate() {
         return LocalDateTime.now()
-                .plusMinutes(20)
+                .plusMinutes(200)
                 .toInstant(ZoneOffset.of("-03:00"));
     }
 }
