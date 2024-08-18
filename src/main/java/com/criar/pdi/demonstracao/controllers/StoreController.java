@@ -9,7 +9,6 @@ import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.S
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
-import com.criar.pdi.demonstracao.models.Store.Store;
 import com.criar.pdi.demonstracao.services.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,7 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/store")
@@ -46,6 +45,19 @@ public class StoreController {
     }
     @GetMapping
     @Operation(description = "Pega uma lista paginada de Lojas")
+    public ResponseEntity<?> getStores(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
+        try{
+            Page<StoreCommonDTO> pages = storeService.getStores(page, size);
+            return ResponseEntity.ok(pages);
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        }
+    }
+    @GetMapping("/search")
+    @Operation(description = "Pega uma lista paginada de Lojas")
     @Transactional
     public ResponseEntity<?> getStores(
             @RequestParam(defaultValue = "0") int page,
@@ -58,8 +70,8 @@ public class StoreController {
             @RequestParam(defaultValue = "", required = false) String region
     ){
         try{
-            Page<StoreCommonDTO> pages = storeService.getStoresByParams(page, size, name, owner, description, address, region, cnpj);
-            return ResponseEntity.ok(pages);
+            List<StoreCommonDTO> pages = storeService.getStoresByParams( name, owner, description, address, region, cnpj);
+            return ResponseEntity.ok(pages); //TODO: Padronizar retorno
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }

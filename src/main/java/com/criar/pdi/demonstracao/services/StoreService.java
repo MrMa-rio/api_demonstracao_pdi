@@ -3,14 +3,11 @@ package com.criar.pdi.demonstracao.services;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
-import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
 import com.criar.pdi.demonstracao.models.Store.Store;
-import com.criar.pdi.demonstracao.models.User.User;
-import com.criar.pdi.demonstracao.models.User.UserAccessLevel;
 import com.criar.pdi.demonstracao.repositories.IStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,8 +16,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -43,29 +38,26 @@ public class StoreService {
         }
     }
 
-    private Page<StoreCommonDTO> page(List<Store> storePage, Pageable pageable) {
-        List<StoreCommonDTO> storeCommonDTOList = storePage.stream()
+    private Page<StoreCommonDTO> page(Page<Store> storePage, Pageable pageable) {
+        List<StoreCommonDTO> storeCommonDTOList = storePage.getContent().stream()
                 .map(Store::getCommonDTO).toList();
-        return new PageImpl<>(storeCommonDTOList, pageable, storePage.size());
+        return new PageImpl<>(storeCommonDTOList, pageable, storePage.getTotalElements());
     }
 
-//    public Page<StoreCommonDTO> getStores(int page, int size, String name, String ownerID, String region, String cnpj) {
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//        Page<Store> storePage  = getStoresByParams(name, ownerID, region, cnpj, pageable);
-//        if(storePage.isEmpty())  storePage = iStoreRepository.findAll(pageable);
-//        return page(storePage, pageable);
-//    }
-
-    public Page<StoreCommonDTO> getStoresByParams(int page, int size, String name, String ownerID, String description, String address, String region, String cnpj) { //TODO encapsular em uma DTO
+    public Page<StoreCommonDTO> getStores(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
+        Page<Store> storePage  = iStoreRepository.findAll(pageable);
+        return page(storePage, pageable);
+    }
+
+    public List<StoreCommonDTO> getStoresByParams(String name, String ownerID, String description, String address, String region, String cnpj) { //TODO: encapsular em uma DTO
         ownerID = ownerID.isEmpty() ? null : ownerID;
         address = address.isEmpty() ? null : address;
-        region = region.isEmpty() ? null : region; // refatorar DTO
+        region = region.isEmpty() ? null : region; //TODO: refatorar DTO
 
         List<Store> storePage = iStoreRepository.searchStoresByParams(name, ownerID, description, address, region, cnpj);
-
-        return page(storePage, pageable);
+        return storePage.stream()
+                .map(Store::getCommonDTO).toList();
     }
 
     public StoreCommonDTO setStore(StoreDTO storeDTO) {
