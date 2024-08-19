@@ -2,6 +2,7 @@ package com.criar.pdi.demonstracao.services;
 
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
+import com.criar.pdi.demonstracao.DTOs.Store.StoreSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
@@ -50,14 +51,17 @@ public class StoreService {
         return page(storePage, pageable);
     }
 
-    public List<StoreCommonDTO> getStoresByParams(String name, String ownerID, String description, String address, String region, String cnpj) { //TODO: encapsular em uma DTO
-        ownerID = ownerID.isEmpty() ? null : ownerID;
-        address = address.isEmpty() ? null : address;
-        region = region.isEmpty() ? null : region; //TODO: refatorar DTO
+    public List<StoreCommonDTO> getStoresByParams(StoreSearchDTO storeSearchDTO) {
 
-        List<Store> storePage = iStoreRepository.searchStoresByParams(name, ownerID, description, address, region, cnpj);
+        List<Store> storePage = iStoreRepository.searchStoresByParams(
+                storeSearchDTO.name(),
+                storeSearchDTO.ownerID(),
+                storeSearchDTO.description(),
+                storeSearchDTO.address(),
+                storeSearchDTO.region(),
+                storeSearchDTO.cnpj());
         return storePage.stream()
-                .map(Store::getCommonDTO).toList();
+                .map(Store::getCommonDTO).toList(); // TODO: Retornar uma lista paginada;
     }
 
     public StoreCommonDTO setStore(StoreDTO storeDTO) {

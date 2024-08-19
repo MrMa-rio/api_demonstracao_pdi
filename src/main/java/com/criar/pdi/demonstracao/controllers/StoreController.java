@@ -3,6 +3,7 @@ package com.criar.pdi.demonstracao.controllers;
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
+import com.criar.pdi.demonstracao.DTOs.Store.StoreSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
@@ -17,6 +18,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,8 +72,8 @@ public class StoreController {
             @RequestParam(defaultValue = "", required = false) String region
     ){
         try{
-            List<StoreCommonDTO> pages = storeService.getStoresByParams( name, owner, description, address, region, cnpj);
-            return ResponseEntity.ok(pages); //TODO: Padronizar retorno
+            List<StoreCommonDTO> pages = storeService.getStoresByParams(new StoreSearchDTO(name, owner, description, address, region, cnpj));
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages))); //TODO: Padronizar retorno
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
