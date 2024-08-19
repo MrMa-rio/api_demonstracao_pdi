@@ -2,6 +2,7 @@ package com.criar.pdi.demonstracao.services;
 
 import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
+import com.criar.pdi.demonstracao.DTOs.User.UserSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
 import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.User.UserGenericException.UserGenericException;
@@ -39,13 +40,27 @@ public class UserService {
         }
     }
 
+    private Page<UserCommonDTO> page(Page<User> userPage, Pageable pageable) {
+        List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
+                .map(User::getCommonDTO).toList();
+        return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
+    }
 
     public Page<UserCommonDTO> getUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = iUserRepository.findAll(pageable);
-        List<UserCommonDTO> userCommonDTOList = userPage.getContent().stream()
-                .map(User::getCommonDTO).toList();
-        return new PageImpl<>(userCommonDTOList, pageable, userPage.getTotalElements());
+        return page(userPage, pageable);
+    }
+
+    public List<UserCommonDTO> getUsersByParams(UserSearchDTO userSearchDTO){
+        List<User> storePage = iUserRepository.searchStoresByParams(
+                userSearchDTO.name(),
+                userSearchDTO.fullName(),
+                userSearchDTO.email(),
+                userSearchDTO.cpf(),
+                userSearchDTO.userAccessLevel());
+        return storePage.stream()
+                .map(User::getCommonDTO).toList(); // TODO: Retornar uma lista paginada;
     }
 
     public UserCommonDTO setUser(UserDTO userDTO) {

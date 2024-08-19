@@ -3,6 +3,7 @@ package com.criar.pdi.demonstracao.controllers;
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserDTO;
+import com.criar.pdi.demonstracao.DTOs.User.UserSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.User.UserUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.UserDuplicateDataException;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -40,18 +43,42 @@ public class UserController {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
+
     @GetMapping
-    @Operation(description = "Pega uma lista paginada de Usuarios por Parametros")
+    @Operation(description = "Pega uma lista paginada de Usuarios")
     public ResponseEntity<?> getUsers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "") String name,
-            @RequestParam(defaultValue = "") String userAccessLevel
-
+            @RequestParam(defaultValue = "10") int size
     ) {
         try {
             Page<UserCommonDTO> pages = userService.getUsers(page, size);
             return ResponseEntity.ok(pages);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        }
+    }
+
+    @GetMapping("/search")
+    @Operation(description = "Pega uma lista paginada de Usuarios por Parametros")
+    @Transactional
+    public ResponseEntity<?> getUsers(
+            @RequestParam(defaultValue = "", required = false) String name,
+            @RequestParam(defaultValue = "", required = false) String fullName,
+            @RequestParam(defaultValue = "", required = false) String email,
+            @RequestParam(defaultValue = "", required = false) String cpf,
+            @RequestParam(defaultValue = "", required = false) String userAccessLevel
+    ) {
+        try {
+            List<UserCommonDTO> pages = userService.getUsersByParams(new UserSearchDTO(
+                    name,
+                    fullName,
+                    email,
+                    cpf,
+                    userAccessLevel
+            ));
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e) {
