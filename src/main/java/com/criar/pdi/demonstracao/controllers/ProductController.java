@@ -3,6 +3,7 @@ package com.criar.pdi.demonstracao.controllers;
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductDTO;
+import com.criar.pdi.demonstracao.DTOs.Product.ProductSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.Product.ProductDuplicateDataException.ProductDuplicateDataException;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -36,6 +39,36 @@ public class ProductController {
         try {
             Page<ProductCommonDTO> pages = productService.getProducts(page, size);
             return ResponseEntity.ok(pages);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        }
+    }
+
+    @GetMapping("/search")
+    @Transactional
+    public ResponseEntity<?> getProductsByParams(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "", required = false) String name,
+            @RequestParam(defaultValue = "", required = false) String description,
+            @RequestParam(defaultValue = "", required = false) String price,
+            @RequestParam(defaultValue = "", required = false) String quantity,
+            @RequestParam(defaultValue = "", required = false) String category,
+            @RequestParam(defaultValue = "", required = false) String storeID,
+            @RequestParam(defaultValue = "", required = false) String images,
+            @RequestParam(defaultValue = "", required = false) String specification
+    ) {
+        try {
+            List<ProductCommonDTO> pages = productService.getProductsByParams(new ProductSearchDTO(
+                    name,
+                    description,
+                    price,
+                    quantity,
+                    category,
+                    storeID,
+                    images,
+                    specification));
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
