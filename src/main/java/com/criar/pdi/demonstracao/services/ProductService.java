@@ -2,6 +2,7 @@ package com.criar.pdi.demonstracao.services;
 
 import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductDTO;
+import com.criar.pdi.demonstracao.DTOs.Product.ProductSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductUpdateDTO;
 import com.criar.pdi.demonstracao.exceptions.Product.ProductIdentifyException.ProductIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Product.ProductNotFoundException.ProductNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,12 +25,26 @@ import java.util.NoSuchElementException;
 public class ProductService {
     @Autowired
     IProductRepository iProductRepository;
+
     public Page<ProductCommonDTO> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = iProductRepository.findAll(pageable);
         List<ProductCommonDTO> storeCommonDTOList = productPage.getContent().stream()
                 .map(Product::getCommonDTO).toList();
         return new PageImpl<>(storeCommonDTOList, pageable, productPage.getTotalElements());
+    }
+
+    public List<ProductCommonDTO> getProductsByParams(ProductSearchDTO productSearchDTO) {
+        List<Product> productPage = iProductRepository.searchProductsByParams(
+                productSearchDTO.name(),
+                productSearchDTO.description(),
+                productSearchDTO.price(),
+                productSearchDTO.quantity(),
+                productSearchDTO.category(),
+                productSearchDTO.storeID(),
+                productSearchDTO.images(),
+                productSearchDTO.specification());
+        return productPage.stream().map(Product::getCommonDTO).toList(); //TODO: Retornar uma lista paginada;
     }
 
     public ProductCommonDTO getStoreByID(String productID) {
@@ -52,8 +68,7 @@ public class ProductService {
             return product.getCommonDTO();
         } catch (DataIntegrityViolationException e) {
             throw new StoreDuplicateDataException();
-        }
-        catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
@@ -70,17 +85,18 @@ public class ProductService {
             throw new RuntimeException(e);
         }
     }
-    public void deleteProduct(String productID){
-        try{
+
+    public void deleteProduct(String productID) {
+        try {
             Product product = iProductRepository.findById(Integer.valueOf(productID)).orElseThrow();
-            if(product.isInactive()){
+            if (product.isInactive()) {
                 throw new StoreGenericException("ESTE PRODUTO JA ESTA INATIVADO!!");
             }
             product.setExclusionDate();
             iProductRepository.saveAndFlush(product);
         } catch (NoSuchElementException e) {
             throw new ProductNotFoundException();
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
