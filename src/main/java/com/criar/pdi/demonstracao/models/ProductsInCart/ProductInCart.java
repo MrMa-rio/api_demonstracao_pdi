@@ -1,8 +1,8 @@
 package com.criar.pdi.demonstracao.models.ProductsInCart;
 
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartCommonDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartUpdateDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartCommonDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartUpdateDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.criar.pdi.demonstracao.repositories;
 
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartCommonDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartCommonDTO;
 import com.criar.pdi.demonstracao.models.ProductsInCart.ProductInCart;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,9 +1,9 @@
 package com.criar.pdi.demonstracao.controllers;
 
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartCommonDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartDTO;
-import com.criar.pdi.demonstracao.DTOs.ProductInCartDTO.ProductInCartUpdateDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartCommonDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartDTO;
+import com.criar.pdi.demonstracao.DTOs.ProductInCart.ProductInCartUpdateDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
 import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartDuplicateDataException.ProductInCartDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.ProductInCart.ProductInCartGenericException.ProductInCartGenericException;

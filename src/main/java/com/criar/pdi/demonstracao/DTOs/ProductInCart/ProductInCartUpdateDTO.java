@@ -1,4 +1,4 @@
-package com.criar.pdi.demonstracao.DTOs.ProductInCartDTO;
+package com.criar.pdi.demonstracao.DTOs.ProductInCart;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import jakarta.validation.constraints.NotNull;

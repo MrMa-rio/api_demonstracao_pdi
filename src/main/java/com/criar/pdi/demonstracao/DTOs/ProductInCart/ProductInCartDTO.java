@@ -1,12 +1,10 @@
-package com.criar.pdi.demonstracao.DTOs.ProductInCartDTO;
+package com.criar.pdi.demonstracao.DTOs.ProductInCart;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
 
 public record ProductInCartDTO(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
