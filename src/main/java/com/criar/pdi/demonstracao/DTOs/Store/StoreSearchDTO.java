@@ -5,10 +5,10 @@ import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
 
 public record StoreSearchDTO(
         String name,
-        String ownerID,
+        Integer ownerID,
         String description,
-        String address,
-        String region,
+        Integer address,
+        Integer region,
         String cnpj) implements IGenericDTO {
     @Override
     public String name() {
@@ -16,11 +16,6 @@ public record StoreSearchDTO(
         return name;
     }
 
-    @Override
-    public String ownerID() {
-        if(ownerID.isEmpty()) return null;
-        return ownerID;
-    }
 
     @Override
     public String description() {
@@ -28,17 +23,6 @@ public record StoreSearchDTO(
         return description;
     }
 
-    @Override
-    public String address() {
-        if(address.isEmpty()) return null;
-        return address;
-    }
-
-    @Override
-    public String region() {
-        if(region.isEmpty()) return null;
-        return region;
-    }
 
     @Override
     public String cnpj() {

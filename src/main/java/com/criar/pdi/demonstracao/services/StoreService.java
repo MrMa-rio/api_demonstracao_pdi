@@ -3,7 +3,6 @@ package com.criar.pdi.demonstracao.services;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
-import com.criar.pdi.demonstracao.DTOs.Store.StoreSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreUpdateDTO;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.StoreDuplicateDataException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
@@ -19,12 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 @Service
 public class StoreService {
@@ -65,17 +63,10 @@ public class StoreService {
         return page(storePage, pageable);
     }
 
-    public List<StoreCommonDTO> getStoresByParams(StoreSearchDTO storeSearchDTO) {
-
-        List<Store> storePage = iStoreRepository.searchStoresByParams(
-                storeSearchDTO.name(),
-                storeSearchDTO.ownerID(),
-                storeSearchDTO.description(),
-                storeSearchDTO.address(),
-                storeSearchDTO.region(),
-                storeSearchDTO.cnpj());
-        return storePage.stream()
-                .map(Store::getCommonDTO).toList(); // TODO: Retornar uma lista paginada;
+    public Page<StoreCommonDTO> getStoresByParams(Specification<Store> specification, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Store> storePage = iStoreRepository.findAll(specification, pageable);
+        return page(storePage, pageable); // TODO: Retornar uma lista paginada;
     }
 
     public StoreCommonDTO setStore(StoreDTO storeDTO) {

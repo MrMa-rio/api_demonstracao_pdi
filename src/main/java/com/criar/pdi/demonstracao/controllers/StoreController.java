@@ -11,6 +11,7 @@ import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGe
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
 import com.criar.pdi.demonstracao.services.StoreService;
+import com.criar.pdi.demonstracao.specifications.Stores.StoreSpecification;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -83,14 +84,22 @@ public class StoreController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "", required = false) String name,
-            @RequestParam(defaultValue = "", required = false) String owner,
+            @RequestParam(defaultValue = "", required = false) Integer owner,
             @RequestParam(defaultValue = "", required = false) String cnpj,
             @RequestParam(defaultValue = "", required = false) String description,
-            @RequestParam(defaultValue = "", required = false) String address,
-            @RequestParam(defaultValue = "", required = false) String region
+            @RequestParam(defaultValue = "", required = false) Integer address,
+            @RequestParam(defaultValue = "", required = false) Integer region
     ) {
         try {
-            List<StoreCommonDTO> pages = storeService.getStoresByParams(new StoreSearchDTO(name, owner, description, address, region, cnpj));
+            Page<StoreCommonDTO> pages = storeService.getStoresByParams(
+                    new StoreSpecification(new StoreSearchDTO(
+                            name,
+                            owner,
+                            description,
+                            address,
+                            region,
+                            cnpj)),
+                    page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages))); //TODO: Padronizar retorno
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
