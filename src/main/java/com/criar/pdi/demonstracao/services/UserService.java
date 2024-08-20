@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,15 +53,10 @@ public class UserService {
         return page(userPage, pageable);
     }
 
-    public List<UserCommonDTO> getUsersByParams(UserSearchDTO userSearchDTO){
-        List<User> storePage = iUserRepository.searchStoresByParams(
-                userSearchDTO.name(),
-                userSearchDTO.fullName(),
-                userSearchDTO.email(),
-                userSearchDTO.cpf(),
-                userSearchDTO.userAccessLevel());
-        return storePage.stream()
-                .map(User::getCommonDTO).toList(); // TODO: Retornar uma lista paginada;
+    public Page<UserCommonDTO> getUsersByParams(Specification<User> specification, Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<User> userPage = iUserRepository.findAll(specification, pageable);
+        return page(userPage, pageable);
     }
 
     public UserCommonDTO setUser(UserDTO userDTO) {

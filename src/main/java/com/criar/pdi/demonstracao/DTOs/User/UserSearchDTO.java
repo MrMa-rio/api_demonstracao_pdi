@@ -7,7 +7,7 @@ public record UserSearchDTO(
         String fullName,
         String email,
         String cpf,
-        String userAccessLevel) implements IGenericDTO {
+        Integer userAccessLevel) implements IGenericDTO {
     @Override
     public String name() {
         if(name.isEmpty()) return null;
@@ -30,11 +30,5 @@ public record UserSearchDTO(
     public String cpf() {
         if(cpf.isEmpty()) return null;
         return cpf;
-    }
-
-    @Override
-    public String userAccessLevel() {
-        if(userAccessLevel.isEmpty()) return null;
-        return userAccessLevel;
     }
 }

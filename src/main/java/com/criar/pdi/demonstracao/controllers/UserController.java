@@ -10,6 +10,7 @@ import com.criar.pdi.demonstracao.exceptions.User.UserDuplicateDataException.Use
 import com.criar.pdi.demonstracao.exceptions.User.UserIdentifyException.UserIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.User.UserNotFoundException.UserNotFoundException;
 import com.criar.pdi.demonstracao.services.UserService;
+import com.criar.pdi.demonstracao.specifications.Users.UserSpecification;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,20 +65,21 @@ public class UserController {
     @Operation(description = "Pega uma lista paginada de Usuarios por Parametros")
     @Transactional
     public ResponseEntity<?> getUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "", required = false) String name,
             @RequestParam(defaultValue = "", required = false) String fullName,
             @RequestParam(defaultValue = "", required = false) String email,
             @RequestParam(defaultValue = "", required = false) String cpf,
-            @RequestParam(defaultValue = "", required = false) String userAccessLevel
+            @RequestParam(defaultValue = "", required = false) Integer userAccessLevel
     ) {
         try {
-            List<UserCommonDTO> pages = userService.getUsersByParams(new UserSearchDTO(
+            Page<UserCommonDTO> pages = userService.getUsersByParams(new UserSpecification(new UserSearchDTO(
                     name,
                     fullName,
                     email,
                     cpf,
-                    userAccessLevel
-            ));
+                    userAccessLevel)), page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
