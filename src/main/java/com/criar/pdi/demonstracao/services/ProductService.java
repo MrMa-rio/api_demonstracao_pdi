@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,27 +26,24 @@ import java.util.NoSuchElementException;
 public class ProductService {
     @Autowired
     IProductRepository iProductRepository;
-
-    public Page<ProductCommonDTO> getProducts(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productPage = iProductRepository.findAll(pageable);
+    private Page<ProductCommonDTO> page(Page<Product> productPage, Pageable pageable) {
         List<ProductCommonDTO> storeCommonDTOList = productPage.getContent().stream()
                 .map(Product::getCommonDTO).toList();
         return new PageImpl<>(storeCommonDTOList, pageable, productPage.getTotalElements());
     }
-
-    public List<ProductCommonDTO> getProductsByParams(ProductSearchDTO productSearchDTO) {
-        List<Product> productPage = iProductRepository.searchProductsByParams(
-                productSearchDTO.name(),
-                productSearchDTO.description(),
-                productSearchDTO.price(),
-                productSearchDTO.quantity(),
-                productSearchDTO.category(),
-                productSearchDTO.storeID(),
-                productSearchDTO.images(),
-                productSearchDTO.specification());
-        return productPage.stream().map(Product::getCommonDTO).toList(); //TODO: Retornar uma lista paginada;
+    public Page<ProductCommonDTO> getProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = iProductRepository.findAll(pageable);
+        return page(productPage, pageable);
     }
+
+    public Page<ProductCommonDTO> getProductsByParams(Specification<Product> specification, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = iProductRepository.findAll(specification, pageable);
+        return page(productPage, pageable);
+    }
+
+
 
     public ProductCommonDTO getStoreByID(String productID) {
         try {

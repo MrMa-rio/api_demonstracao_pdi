@@ -4,11 +4,12 @@ import com.criar.pdi.demonstracao.models.Product.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.query.Procedure;
 
 import java.util.List;
 
-public interface IProductRepository extends JpaRepository<Product, Integer> {
+public interface IProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
     @Procedure("prc_search_products")
     List<Product> searchProductsByParams(String name,
                                        String description,
