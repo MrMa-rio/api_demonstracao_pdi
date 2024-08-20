@@ -1,5 +1,6 @@
 package com.criar.pdi.demonstracao.services;
 
+import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreSearchDTO;
@@ -8,7 +9,9 @@ import com.criar.pdi.demonstracao.exceptions.Store.StoreDuplicateDataException.S
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreIdentifyException.StoreIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreNotFoundException.StoreNotFoundException;
+import com.criar.pdi.demonstracao.models.Product.Product;
 import com.criar.pdi.demonstracao.models.Store.Store;
+import com.criar.pdi.demonstracao.repositories.IProductRepository;
 import com.criar.pdi.demonstracao.repositories.IStoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,14 +20,19 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 @Service
 public class StoreService {
 
     @Autowired
-    IStoreRepository iStoreRepository;
+    private IStoreRepository iStoreRepository;
+    @Autowired
+    private IProductRepository iProductRepository;
 
     public StoreCommonDTO getStoreByID(String storeID) {
         try {
@@ -43,6 +51,12 @@ public class StoreService {
         List<StoreCommonDTO> storeCommonDTOList = storePage.getContent().stream()
                 .map(Store::getCommonDTO).toList();
         return new PageImpl<>(storeCommonDTOList, pageable, storePage.getTotalElements());
+    }
+
+    private Page<ProductCommonDTO> pageOfProduct(Page<Product> storePage, Pageable pageable) {
+        List<ProductCommonDTO> productCommonDTOList = storePage.getContent().stream()
+                .map(Product::getCommonDTO).toList();
+        return new PageImpl<>(productCommonDTOList, pageable, storePage.getTotalElements());
     }
 
     public Page<StoreCommonDTO> getStores(int page, int size) {
@@ -100,6 +114,16 @@ public class StoreService {
             iStoreRepository.saveAndFlush(store);
         } catch (NoSuchElementException e) {
             throw new StoreNotFoundException();
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Page<ProductCommonDTO> getProductsByStoreByID(String storeID, int page, int size) {
+        try{
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Product> productPage  = iProductRepository.findAllByStore(storeID, pageable);
+            return pageOfProduct(productPage, pageable);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
