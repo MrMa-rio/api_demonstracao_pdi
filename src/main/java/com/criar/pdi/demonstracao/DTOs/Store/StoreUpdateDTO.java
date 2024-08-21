@@ -19,6 +19,7 @@ public record StoreUpdateDTO(
         String address,
         String phone,
         String region,
+        String ratingStar,
         @Pattern(regexp = "\\d{14}")
         String cnpj
 ) implements IGenericDTO {

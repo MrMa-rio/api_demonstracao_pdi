@@ -21,6 +21,7 @@ public record StoreDTO(
         String address,
         String phone,
         String region,
+        String ratingStar,
         @NotNull @Pattern(regexp = "\\d{14}")
         String cnpj,
         LocalDateTime inclusionDate

@@ -9,6 +9,7 @@ public record StoreSearchDTO(
         String description,
         Integer address,
         Integer region,
+        Double ratingStar,
         String cnpj) implements IGenericDTO {
     @Override
     public String name() {

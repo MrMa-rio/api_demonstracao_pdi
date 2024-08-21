@@ -26,6 +26,7 @@ public class Store {
     private String phone;
     private String region;
     private String cnpj;
+    private String ratingStar;
     private LocalDateTime inclusionDate;
     private LocalDateTime updatedDate;
     private LocalDateTime exclusionDate;
@@ -39,6 +40,7 @@ public class Store {
         this.phone = storeDTO.phone();
         this.region = storeDTO.region();
         this.cnpj = storeDTO.cnpj();
+        this.ratingStar = storeDTO.ratingStar();
     }
 
     public StoreCommonDTO getCommonDTO(){
@@ -50,6 +52,7 @@ public class Store {
                 this.address,
                 this.phone,
                 this.region,
+                this.ratingStar,
                 this.cnpj,
                 this.inclusionDate,
                 this.updatedDate,
@@ -84,6 +87,9 @@ public class Store {
         }
         if(storeUpdateDTO.region() != null){
             this.region = storeUpdateDTO.region();
+        }
+        if(storeUpdateDTO.ratingStar() != null){
+            this.ratingStar = storeUpdateDTO.ratingStar();
         }
     }
 

@@ -19,6 +19,7 @@ public class StoreSpecification implements Specification<Store> {
     private final String description;
     private final Integer address;
     private final Integer region;
+    private final Double ratingStar;
     private final String cnpj;
 
     public StoreSpecification(StoreSearchDTO storeSearchDTO) {
@@ -27,6 +28,7 @@ public class StoreSpecification implements Specification<Store> {
         this.description = storeSearchDTO.description();
         this.address = storeSearchDTO.address();
         this.region = storeSearchDTO.region();
+        this.ratingStar = storeSearchDTO.ratingStar();
         this.cnpj = storeSearchDTO.cnpj();
     }
 
@@ -49,6 +51,9 @@ public class StoreSpecification implements Specification<Store> {
         }
         if (region != null) {
             predicates.add(criteriaBuilder.equal(root.get("region"), this.region));
+        }
+        if (ratingStar != null) {
+            predicates.add(criteriaBuilder.equal(root.get("ratingStar"), this.ratingStar));
         }
         if (cnpj != null) {
             predicates.add(criteriaBuilder.like(root.get("cnpj"), "%" + this.cnpj + "%"));
