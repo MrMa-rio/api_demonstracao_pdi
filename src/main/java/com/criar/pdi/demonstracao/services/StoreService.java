@@ -66,7 +66,13 @@ public class StoreService {
     public Page<StoreCommonDTO> getStoresByParams(Specification<Store> specification, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Store> storePage = iStoreRepository.findAll(specification, pageable);
-        return page(storePage, pageable); // TODO: Retornar uma lista paginada;
+        return page(storePage, pageable);
+    }
+
+    public Page<StoreCommonDTO> getStoresByBetterRating(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Store> storePage = iStoreRepository.findAllByOrderByRatingStarDesc(pageable);
+        return page(storePage, pageable);
     }
 
     public StoreCommonDTO setStore(StoreDTO storeDTO) {

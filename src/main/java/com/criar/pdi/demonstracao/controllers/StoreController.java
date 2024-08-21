@@ -88,7 +88,8 @@ public class StoreController {
             @RequestParam(defaultValue = "", required = false) String cnpj,
             @RequestParam(defaultValue = "", required = false) String description,
             @RequestParam(defaultValue = "", required = false) Integer address,
-            @RequestParam(defaultValue = "", required = false) Integer region
+            @RequestParam(defaultValue = "", required = false) Integer region,
+            @RequestParam(defaultValue = "", required = false) Double ratingStar
     ) {
         try {
             Page<StoreCommonDTO> pages = storeService.getStoresByParams(
@@ -98,9 +99,24 @@ public class StoreController {
                             description,
                             address,
                             region,
+                            ratingStar,
                             cnpj)),
                     page, size);
-            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages))); //TODO: Padronizar retorno
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        }
+    }
+
+    @GetMapping("/beststores")
+    @Operation(description = "Retorna uma lista paginada de lojas bem avaliadas")
+    public ResponseEntity<?> getStoresBetterRating(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            Page<StoreCommonDTO> pages = storeService.getStoresByBetterRating(page, size);
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
