@@ -57,7 +57,8 @@ public class ProductController {
             @RequestParam(defaultValue = "", required = false) Integer category,
             @RequestParam(defaultValue = "", required = false) Integer storeID,
             @RequestParam(defaultValue = "", required = false) String images,
-            @RequestParam(defaultValue = "", required = false) String specification
+            @RequestParam(defaultValue = "", required = false) String specification,
+            @RequestParam(defaultValue = "", required = false) Double ratingStar
     ) {
         try {
             Page<ProductCommonDTO> pages = productService.getProductsByParams(new ProductSpecification(new ProductSearchDTO(
@@ -68,7 +69,8 @@ public class ProductController {
                     category,
                     storeID,
                     images,
-                    specification)), page, size);
+                    specification,
+                    ratingStar)), page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));

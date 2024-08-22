@@ -23,6 +23,7 @@ public record ProductCommonDTO(
         String store,
         String images,
         String specification,
+        Double ratingStar,
         LocalDateTime inclusionDate,
         LocalDateTime updatedDate,
         LocalDateTime exclusionDate

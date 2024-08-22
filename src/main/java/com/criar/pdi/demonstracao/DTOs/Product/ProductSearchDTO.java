@@ -10,7 +10,8 @@ public record ProductSearchDTO(
         Integer category,
         Integer storeID,
         String images,
-        String specification) implements IGenericDTO {
+        String specification,
+        Double ratingStar) implements IGenericDTO {
     @Override
     public String name() {
         if (name.isEmpty()) return null;

@@ -1,6 +1,7 @@
 package com.criar.pdi.demonstracao.controllers;
 
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
+import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreDTO;
 import com.criar.pdi.demonstracao.DTOs.Store.StoreSearchDTO;
@@ -108,7 +109,7 @@ public class StoreController {
         }
     }
 
-    @GetMapping("/beststores")
+    @GetMapping("/top_rated")
     @Operation(description = "Retorna uma lista paginada de lojas bem avaliadas")
     public ResponseEntity<?> getStoresBetterRating(
             @RequestParam(defaultValue = "0") int page,
@@ -116,6 +117,21 @@ public class StoreController {
     ) {
         try {
             Page<StoreCommonDTO> pages = storeService.getStoresByBetterRating(page, size);
+            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        }
+    }
+
+    @GetMapping("/{storeID}/products_top_rated")
+    @Operation(description = "Retorna uma lista paginada de lojas bem avaliadas")
+    public ResponseEntity<?> getBetterProductsByBetterStoreRating(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @PathVariable String storeID
+    ) {
+        try {
+            Page<ProductCommonDTO> pages = storeService.getProductsByBetterStoreRating(storeID, page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));

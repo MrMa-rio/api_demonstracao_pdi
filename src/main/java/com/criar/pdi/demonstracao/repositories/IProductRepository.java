@@ -21,4 +21,6 @@ public interface IProductRepository extends JpaRepository<Product, Integer>, Jpa
                                        String specification); //TODO realizar a paginacao da maneira correta
 
     Page<Product> findAllByStore(String storeID, Pageable pageable);
+
+    Page<Product> findAllByStoreOrderByRatingStarDesc(String storeID, Pageable pageable);
 }

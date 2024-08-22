@@ -18,6 +18,7 @@ public record ProductUpdateDTO(
         String category,
         String store,
         String images,
-        String specification
+        String specification,
+        Double ratingStar
 ) implements IGenericDTO {
 }

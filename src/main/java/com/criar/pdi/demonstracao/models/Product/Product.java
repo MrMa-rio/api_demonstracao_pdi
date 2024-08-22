@@ -26,6 +26,7 @@ public class Product {
     private String store;
     private String images;
     private String specification;
+    private Double ratingStar;
     private LocalDateTime inclusionDate;
     private LocalDateTime updatedDate;
     private LocalDateTime exclusionDate;
@@ -40,6 +41,7 @@ public class Product {
         this.store = productDTO.store();
         this.images = productDTO.images();
         this.specification = productDTO.specification();
+        this.ratingStar = productDTO.ratingStar();
     }
 
     public ProductCommonDTO getCommonDTO() {
@@ -53,6 +55,7 @@ public class Product {
                 this.store,
                 this.images,
                 this.specification,
+                this.ratingStar,
                 this.inclusionDate,
                 this.updatedDate,
                 this.exclusionDate
@@ -100,6 +103,9 @@ public class Product {
         }
         if(productUpdateDTO.specification() != null){
             this.specification = productUpdateDTO.specification();
+        }
+        if(productUpdateDTO.ratingStar() != null){
+            this.ratingStar = productUpdateDTO.ratingStar();
         }
     }
 }

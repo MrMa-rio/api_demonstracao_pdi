@@ -20,6 +20,7 @@ public record ProductDTO(
         @NotBlank
         String store,
         String images,
-        String specification
+        String specification,
+        Double ratingStar
 ) implements IGenericDTO {
 }

@@ -125,4 +125,10 @@ public class StoreService {
             throw new RuntimeException(e);
         }
     }
+
+    public Page<ProductCommonDTO> getProductsByBetterStoreRating(String storeID, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = iProductRepository.findAllByStoreOrderByRatingStarDesc(storeID, pageable);
+        return pageOfProduct(productPage, pageable);
+    }
 }
