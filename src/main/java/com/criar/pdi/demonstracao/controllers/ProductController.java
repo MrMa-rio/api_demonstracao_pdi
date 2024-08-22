@@ -21,8 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/product")
@@ -77,10 +75,23 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/top_rated")
+    public ResponseEntity<?> getProductsTopRated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            Page<ProductCommonDTO> pages = productService.getProductsTopRated(page, size);
+            return ResponseEntity.ok(pages);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
+        }
+    }
+
     @GetMapping("/{productID}")
     public ResponseEntity<ResponseBody> getProduct(@PathVariable @Valid String productID) {
         try {
-            return ResponseEntity.ok(new ResponseBody(200, productService.getStoreByID(productID)));
+            return ResponseEntity.ok(new ResponseBody(200, productService.getProductByID(productID)));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (ProductIdentifyException e) {

@@ -20,11 +20,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/store")
@@ -111,12 +108,12 @@ public class StoreController {
 
     @GetMapping("/top_rated")
     @Operation(description = "Retorna uma lista paginada de lojas bem avaliadas")
-    public ResponseEntity<?> getStoresBetterRating(
+    public ResponseEntity<?> getProductsTopRated(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<StoreCommonDTO> pages = storeService.getStoresByBetterRating(page, size);
+            Page<StoreCommonDTO> pages = storeService.getStoresTopRated(page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
@@ -124,14 +121,14 @@ public class StoreController {
     }
 
     @GetMapping("/{storeID}/products_top_rated")
-    @Operation(description = "Retorna uma lista paginada de lojas bem avaliadas")
-    public ResponseEntity<?> getBetterProductsByBetterStoreRating(
+    @Operation(description = "Retorna uma lista paginada de melhores produtos das lojas bem avaliadas")
+    public ResponseEntity<?> getProductsTopRatedByStoreTopRating(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @PathVariable String storeID
     ) {
         try {
-            Page<ProductCommonDTO> pages = storeService.getProductsByBetterStoreRating(storeID, page, size);
+            Page<ProductCommonDTO> pages = storeService.getProductsTopRatedByStoreTopRating(storeID, page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));

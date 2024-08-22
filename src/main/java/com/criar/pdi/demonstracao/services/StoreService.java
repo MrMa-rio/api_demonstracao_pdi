@@ -69,7 +69,7 @@ public class StoreService {
         return page(storePage, pageable);
     }
 
-    public Page<StoreCommonDTO> getStoresByBetterRating(Integer page, Integer size){
+    public Page<StoreCommonDTO> getStoresTopRated(Integer page, Integer size){
         Pageable pageable = PageRequest.of(page, size);
         Page<Store> storePage = iStoreRepository.findAllByOrderByRatingStarDesc(pageable);
         return page(storePage, pageable);
@@ -126,7 +126,7 @@ public class StoreService {
         }
     }
 
-    public Page<ProductCommonDTO> getProductsByBetterStoreRating(String storeID, int page, int size) {
+    public Page<ProductCommonDTO> getProductsTopRatedByStoreTopRating(String storeID, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = iProductRepository.findAllByStoreOrderByRatingStarDesc(storeID, pageable);
         return pageOfProduct(productPage, pageable);

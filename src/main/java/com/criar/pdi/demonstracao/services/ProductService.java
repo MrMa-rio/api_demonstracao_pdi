@@ -2,7 +2,6 @@ package com.criar.pdi.demonstracao.services;
 
 import com.criar.pdi.demonstracao.DTOs.Product.ProductCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductDTO;
-import com.criar.pdi.demonstracao.DTOs.Product.ProductSearchDTO;
 import com.criar.pdi.demonstracao.DTOs.Product.ProductUpdateDTO;
 import com.criar.pdi.demonstracao.exceptions.Product.ProductIdentifyException.ProductIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Product.ProductNotFoundException.ProductNotFoundException;
@@ -26,11 +25,13 @@ import java.util.NoSuchElementException;
 public class ProductService {
     @Autowired
     IProductRepository iProductRepository;
+
     private Page<ProductCommonDTO> page(Page<Product> productPage, Pageable pageable) {
         List<ProductCommonDTO> storeCommonDTOList = productPage.getContent().stream()
                 .map(Product::getCommonDTO).toList();
         return new PageImpl<>(storeCommonDTOList, pageable, productPage.getTotalElements());
     }
+
     public Page<ProductCommonDTO> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = iProductRepository.findAll(pageable);
@@ -43,9 +44,15 @@ public class ProductService {
         return page(productPage, pageable);
     }
 
+    public Page<ProductCommonDTO> getProductsTopRated(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = iProductRepository.findAllByOrderByRatingStarDesc(pageable);
+        return page(productPage, pageable);
+
+    }
 
 
-    public ProductCommonDTO getStoreByID(String productID) {
+    public ProductCommonDTO getProductByID(String productID) {
         try {
             Product product = iProductRepository.findById(Integer.valueOf(productID)).orElseThrow();
             return product.getCommonDTO();
@@ -76,7 +83,7 @@ public class ProductService {
             Product product = iProductRepository.findById(Integer.valueOf(productUpdateDTO.ID())).orElseThrow();
             product.update(productUpdateDTO);
             iProductRepository.saveAndFlush(product);
-            return getStoreByID(productUpdateDTO.ID());
+            return getProductByID(productUpdateDTO.ID());
         } catch (NoSuchElementException e) {
             throw new ProductNotFoundException();
         } catch (RuntimeException e) {
