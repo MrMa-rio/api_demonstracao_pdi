@@ -1,4 +1,4 @@
-package com.criar.pdi.demonstracao.exceptions.Delivery.DeliveryGenericException;
+package com.criar.pdi.demonstracao.exceptions.Coupon.CouponGenericException;
 
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
 import com.criar.pdi.demonstracao.components.ResponseBody.ResponseBody;
@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class DeliveryGenericException extends RuntimeException{
+public class CouponGenericException extends RuntimeException{
 
-    public DeliveryGenericException(){
-        super("ERRO AO REALIZAR UMA OPERAÇÃO - ENTREGA");
+    public CouponGenericException(){
+        super("ERRO AO REALIZAR UMA OPERAÇÃO - CUPOM");
     }
-    public DeliveryGenericException(String message){
+    public CouponGenericException(String message){
         super(message);
     }
 
