@@ -16,8 +16,8 @@ public class DeliveryGenericException extends RuntimeException{
         super(message);
     }
 
-    @ExceptionHandler(CouponGenericException.class)
-    public ResponseEntity<ResponseBody> execute(CouponGenericException e){
+    @ExceptionHandler(DeliveryGenericException.class)
+    public ResponseEntity<ResponseBody> execute(DeliveryGenericException e){
         return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(e.getMessage())));
     }
 }

@@ -25,41 +25,41 @@ public class CouponController {
     private CouponService couponService;
 
     @GetMapping("/{couponID}")
-    public ResponseEntity<?> getCoupon(@PathVariable String couponID){
-        try{
+    public ResponseEntity<?> getCoupon(@PathVariable String couponID) {
+        try {
             return ResponseEntity.ok(new ResponseBody(200, couponService.getCouponByID(couponID)));
-        } catch (CouponNotFoundException e){
+        } catch (CouponNotFoundException e) {
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
             return ResponseEntity.status(404).body(responseBody);
-        } catch (CouponIdentifyException e){
+        } catch (CouponIdentifyException e) {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
+
     @PostMapping
-    public ResponseEntity<?> setCoupon(@RequestBody @Valid CouponDTO couponDTO){
-        try{
+    public ResponseEntity<?> setCoupon(@RequestBody @Valid CouponDTO couponDTO) {
+        try {
             CouponCommonDTO couponCommonDTO = couponService.setCoupon(couponDTO);
             return ResponseEntity.ok(new ResponseBody(200, couponCommonDTO));
-        }catch (CouponDuplicateDataException e){
+        } catch (CouponDuplicateDataException e) {
             return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
-        }
-        catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
+
     @DeleteMapping("/{couponID}")
     public ResponseEntity<ResponseBody> deleteLogicalCoupon(
             @PathVariable String couponID
-    ){
-        try{
+    ) {
+        try {
             couponService.deleteCoupon(couponID);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("CUPOM INATIVADO COM SUCESSO!!")));
-        } catch (CouponNotFoundException e){
+        } catch (CouponNotFoundException e) {
             return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (CouponIdentifyException e){
+        } catch (CouponIdentifyException e) {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
-        }
-        catch (CouponGenericException e){
+        } catch (CouponGenericException e) {
             return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
         }
     }
