@@ -21,8 +21,8 @@ public record CouponCommonDTO(
         Integer categoryID,
         Integer storeID,
         Integer userID,
-        LocalDateTime createdBy,
-        CouponCreateType createdAt,
+        CouponCreateType createdBy,
+        LocalDateTime createdAt,
         LocalDateTime inclusionDate,
         LocalDateTime updatedDate,
         LocalDateTime exclusionDate

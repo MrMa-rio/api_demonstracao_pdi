@@ -19,10 +19,10 @@ public class Coupon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ID;
     private String couponCode;
-    private CouponType couponType;
+    private Integer couponType;
     private String description;
     private Double discountValue;
-    private CouponDiscountType discountType;
+    private Integer discountType;
     private LocalDate expirationDate;
     private LocalDate eventStartDate;
     private LocalDate eventEndDate;
@@ -32,8 +32,8 @@ public class Coupon {
     private Integer storeID;
     @Column(name = "user_id")
     private Integer userID;
-    private LocalDateTime createdBy;
-    private CouponCreateType createdAt;
+    private Integer createdBy;
+    private LocalDateTime createdAt;
     private LocalDateTime inclusionDate;
     private LocalDateTime updatedDate;
     private LocalDateTime exclusionDate;
@@ -41,17 +41,17 @@ public class Coupon {
     public Coupon(CouponDTO couponDTO) {
         this.ID = couponDTO.ID();
         this.couponCode = couponDTO.couponCode();
-        this.couponType = couponDTO.couponType();
+        this.couponType = couponDTO.couponType().code();
         this.description = couponDTO.description();
         this.discountValue = couponDTO.discountValue();
-        this.discountType = couponDTO.discountType();
+        this.discountType = couponDTO.discountType().code();
         this.expirationDate = couponDTO.expirationDate();
         this.eventStartDate = couponDTO.eventStartDate();
         this.eventEndDate = couponDTO.eventEndDate();
         this.categoryID = couponDTO.categoryID();
         this.storeID = couponDTO.storeID();
         this.userID = couponDTO.userID();
-        this.createdBy = couponDTO.createdBy();
+        this.createdBy = couponDTO.createdBy().code();
         this.createdAt = couponDTO.createdAt();
     }
 
@@ -59,17 +59,17 @@ public class Coupon {
         return new CouponCommonDTO(
                 this.ID,
                 this.couponCode,
-                this.couponType,
+                CouponType.get(this.couponType),
                 this.description,
                 this.discountValue,
-                this.discountType,
+                CouponDiscountType.get(this.discountType),
                 this.expirationDate,
                 this.eventStartDate,
                 this.eventEndDate,
                 this.categoryID,
                 this.storeID,
                 this.userID,
-                this.createdBy,
+                CouponCreateType.get(this.createdBy),
                 this.createdAt,
                 this.inclusionDate,
                 this.updatedDate,

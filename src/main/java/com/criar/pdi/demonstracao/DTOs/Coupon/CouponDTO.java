@@ -32,8 +32,8 @@ public record CouponDTO(
         Integer storeID,
         Integer userID,
         @NotNull
-        LocalDateTime createdBy,
+        CouponCreateType createdBy,
         @NotNull
-        CouponCreateType createdAt
+        LocalDateTime createdAt
 ) implements IGenericDTO {
 }

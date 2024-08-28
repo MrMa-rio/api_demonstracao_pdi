@@ -2,8 +2,8 @@ package com.criar.pdi.demonstracao.models.Coupon;
 
 public enum CouponDiscountType {
 
-    PERCENTAGE(2, "PERCENTAGE"),
-    FIXED(3, "FIXED");
+    PERCENTAGE(1, "PERCENTAGE"),
+    FIXED(2, "FIXED");
     private Integer code;
     private String value;
     public Integer code() {
