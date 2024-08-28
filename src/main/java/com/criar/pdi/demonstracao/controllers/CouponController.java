@@ -35,6 +35,17 @@ public class CouponController {
             return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
         }
     }
+    @GetMapping("/coupon-promotional/{couponID}")
+    public ResponseEntity<?> getCouponByCouponCode(@PathVariable String couponID) {
+        try {
+            return ResponseEntity.ok(new ResponseBody(200, couponService.getCouponByCouponCode(couponID)));
+        } catch (CouponNotFoundException e) {
+            ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
+            return ResponseEntity.status(404).body(responseBody);
+        } catch (CouponIdentifyException e) {
+            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
+        }
+    }
 
     @PostMapping
     public ResponseEntity<?> setCoupon(@RequestBody @Valid CouponDTO couponDTO) {

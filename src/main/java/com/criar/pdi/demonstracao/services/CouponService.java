@@ -21,9 +21,21 @@ public class CouponService {
     private ICouponRepository iCouponRepository;
 
     public CouponCommonDTO getCouponByID(String couponID) {
-
         try {
             Coupon coupon = iCouponRepository.findById(Integer.valueOf(couponID)).orElseThrow();
+            return coupon.getCommonDTO();
+        } catch (NoSuchElementException e) {
+            throw new CouponNotFoundException();
+        } catch (NumberFormatException e) {
+            throw new CouponIdentifyException();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CouponCommonDTO getCouponByCouponCode(String couponCode) {
+        try {
+            Coupon coupon = iCouponRepository.findByCouponCode(couponCode).orElseThrow();
             return coupon.getCommonDTO();
         } catch (NoSuchElementException e) {
             throw new CouponNotFoundException();
