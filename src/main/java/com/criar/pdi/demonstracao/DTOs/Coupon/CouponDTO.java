@@ -14,25 +14,20 @@ public record CouponDTO(
         @NotNull
         String couponCode,
         @NotNull
-        CouponType couponType,
-        @NotNull
+        Integer couponType,
         String description,
+        @NotNull
         Double discountValue,
         @NotNull
-        CouponDiscountType discountType,
-        @NotNull
+        Integer discountType,
         LocalDate expirationDate,
-        @NotNull
         LocalDate eventStartDate,
-        @NotNull
         LocalDate eventEndDate,
-        @NotNull
         Integer categoryID,
-        @NotNull
         Integer storeID,
         Integer userID,
         @NotNull
-        CouponCreateType createdBy,
+        Integer createdBy,
         @NotNull
         LocalDateTime createdAt
 ) implements IGenericDTO {

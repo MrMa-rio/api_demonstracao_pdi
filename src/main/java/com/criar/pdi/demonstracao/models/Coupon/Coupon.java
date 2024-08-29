@@ -41,17 +41,17 @@ public class Coupon {
     public Coupon(CouponDTO couponDTO) {
         this.ID = couponDTO.ID();
         this.couponCode = couponDTO.couponCode();
-        this.couponType = couponDTO.couponType().code();
+        this.couponType = couponDTO.couponType();
         this.description = couponDTO.description();
         this.discountValue = couponDTO.discountValue();
-        this.discountType = couponDTO.discountType().code();
+        this.discountType = couponDTO.discountType();
         this.expirationDate = couponDTO.expirationDate();
         this.eventStartDate = couponDTO.eventStartDate();
         this.eventEndDate = couponDTO.eventEndDate();
         this.categoryID = couponDTO.categoryID();
         this.storeID = couponDTO.storeID();
         this.userID = couponDTO.userID();
-        this.createdBy = couponDTO.createdBy().code();
+        this.createdBy = couponDTO.createdBy();
         this.createdAt = couponDTO.createdAt();
     }
 
