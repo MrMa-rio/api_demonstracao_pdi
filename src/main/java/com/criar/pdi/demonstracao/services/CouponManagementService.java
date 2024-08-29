@@ -1,10 +1,8 @@
 package com.criar.pdi.demonstracao.services;
 
 import com.criar.pdi.demonstracao.DTOs.Coupon.CouponCommonDTO;
-import com.criar.pdi.demonstracao.models.Coupon.Coupon;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class CouponManagementService {
