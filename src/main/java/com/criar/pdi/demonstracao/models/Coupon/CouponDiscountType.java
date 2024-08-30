@@ -1,6 +1,6 @@
 package com.criar.pdi.demonstracao.models.Coupon;
 
-public enum CouponDiscountType {
+public enum CouponDiscountType implements ICouponGenericType {
 
     PERCENTAGE(1, "PERCENTAGE"),
     FIXED(2, "FIXED");

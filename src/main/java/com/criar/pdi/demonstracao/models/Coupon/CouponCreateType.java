@@ -1,6 +1,6 @@
 package com.criar.pdi.demonstracao.models.Coupon;
 
-public enum CouponCreateType {
+public enum CouponCreateType implements ICouponGenericType {
     CLIENT(1, "CLIENT"),
     OWNER(2, "OWNER"),
     ADMIN(3, "ADMIN");

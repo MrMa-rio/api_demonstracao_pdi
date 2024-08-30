@@ -2,7 +2,7 @@ package com.criar.pdi.demonstracao.models.Coupon;
 
 import com.criar.pdi.demonstracao.models.User.UserAccessLevel;
 
-public enum CouponType  {
+public enum CouponType implements ICouponGenericType {
     STORE(0, "STORE"),
     CLIENT(1, "CLIENT"),
     CATEGORY(2, "CATEGORY"),
