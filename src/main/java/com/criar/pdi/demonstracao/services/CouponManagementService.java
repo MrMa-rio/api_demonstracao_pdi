@@ -1,30 +1,18 @@
 package com.criar.pdi.demonstracao.services;
 
-import com.criar.pdi.demonstracao.DTOs.Coupon.CouponCommonDTO;
+import com.criar.pdi.demonstracao.components.CouponUtilities.CouponUtilities;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class CouponManagementService {
 
     private final CouponService couponService;
     private final CouponRedemptionService couponRedemptionService;
+    private final CouponUtilities couponUtilities;
 
-    public CouponManagementService(CouponService couponService, CouponRedemptionService couponRedemptionService) {
+    public CouponManagementService(CouponService couponService, CouponRedemptionService couponRedemptionService, CouponUtilities couponUtilities) {
         this.couponService = couponService;
         this.couponRedemptionService = couponRedemptionService;
-    }
-
-    public boolean existCouponCode(String couponCode) {
-        try {
-            CouponCommonDTO couponDTO = couponService.getCouponByCouponCode(couponCode);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
-    }
-
-    public boolean isActive(CouponCommonDTO couponDTO) {
-        return couponDTO.exclusionDate() == null;
+        this.couponUtilities = couponUtilities;
     }
 }
