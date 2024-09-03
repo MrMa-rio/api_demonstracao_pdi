@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ICouponRepository extends JpaRepository<Coupon, Integer> {
 
     Optional<Coupon> findByCouponCode(String integer);
+
 }

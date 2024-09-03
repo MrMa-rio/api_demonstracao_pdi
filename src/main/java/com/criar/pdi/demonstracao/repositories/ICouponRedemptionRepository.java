@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ICouponRedemptionRepository extends JpaRepository<CouponRedemption, Integer> {
     Page<CouponRedemption> findAllByUserIdAndCouponId(String userId, String couponId, Pageable pageable);
+
+    Page<CouponRedemption> findAllByUserIdAndCouponId(String userId, String couponId);
 }

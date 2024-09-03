@@ -1,6 +1,11 @@
 package com.criar.pdi.demonstracao.services;
 
+import com.criar.pdi.demonstracao.DTOs.Coupon.CouponCommonDTO;
+import com.criar.pdi.demonstracao.DTOs.Coupon.CouponOfUserDTO;
+import com.criar.pdi.demonstracao.DTOs.CouponRedemptionDTO.CouponRedemptionCommonDTO;
+import com.criar.pdi.demonstracao.DTOs.CouponRedemptionDTO.CouponRedemptionDTO;
 import com.criar.pdi.demonstracao.components.CouponUtilities.CouponUtilities;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,4 +20,35 @@ public class CouponManagementService {
         this.couponRedemptionService = couponRedemptionService;
         this.couponUtilities = couponUtilities;
     }
+
+    public CouponRedemptionCommonDTO setCouponRedemption(CouponRedemptionDTO couponRedemptionDTO) {
+        CouponCommonDTO couponDTO = couponService.getCouponByID(couponRedemptionDTO.couponId());
+
+        if (!couponUtilities.isActive(
+                Integer.valueOf(
+                        couponRedemptionDTO.couponId()
+                ))) {
+            throw new RuntimeException("O cupom é inativo - management");
+        }
+
+        if (
+                !couponUtilities.validationUsageCoupon(
+                        new CouponOfUserDTO(
+                                couponRedemptionDTO.userId(),
+                                couponRedemptionDTO.couponId()
+                        )
+                )
+        ) {
+            throw new RuntimeException("O cupom ja e utilizado - management");
+        }
+        if (couponUtilities.isExpirate(couponDTO.expirationDate())) {
+            throw new RuntimeException("O cupom esta expirado - management");
+        }
+        if( couponUtilities.isExpirateEvent(couponDTO.eventStartDate(), couponDTO.eventEndDate())){
+            throw new RuntimeException("O evento desse cupom foi expirado - management");
+        }
+        return null; // continuar as verificacoes, possivelmente colocaremos essa implemenmtancao na cupomUtilies
+    }
+
+
 }

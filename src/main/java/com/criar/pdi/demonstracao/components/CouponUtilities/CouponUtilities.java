@@ -1,20 +1,41 @@
 package com.criar.pdi.demonstracao.components.CouponUtilities;
 
 import com.criar.pdi.demonstracao.DTOs.Coupon.CouponCommonDTO;
-import com.criar.pdi.demonstracao.models.Coupon.CouponCreateType;
-import com.criar.pdi.demonstracao.models.Coupon.CouponDiscountType;
-import com.criar.pdi.demonstracao.models.Coupon.CouponType;
-import com.criar.pdi.demonstracao.models.Coupon.ICouponGenericType;
+import com.criar.pdi.demonstracao.DTOs.Coupon.CouponOfUserDTO;
+import com.criar.pdi.demonstracao.models.Coupon.*;
+import com.criar.pdi.demonstracao.models.CouponRedemption.CouponRedemption;
+import com.criar.pdi.demonstracao.repositories.ICouponRedemptionRepository;
+import com.criar.pdi.demonstracao.repositories.ICouponRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@Component
 public class CouponUtilities {
-    public boolean isActive(CouponCommonDTO couponDTO) {
-        return couponDTO.exclusionDate() == null;
+
+    @Autowired
+    private ICouponRepository iCouponRepository;
+    @Autowired
+    private ICouponRedemptionRepository iCouponRedemptionRepository;
+
+    public boolean isActive(Integer couponID) {
+        Coupon coupon = iCouponRepository.getReferenceById(couponID);
+        return !coupon.isInactive();
     }
 
-    public boolean isExpirate(CouponCommonDTO couponDTO) {
-        return LocalDate.now().isAfter(couponDTO.expirationDate());
+    public boolean isExpirate(LocalDate expirationDate) {
+        if (expirationDate == null) return false;
+        return LocalDate.now().isAfter(expirationDate);
+    }
+
+    public boolean isExpirateEvent(LocalDate eventStartDate, LocalDate eventEndDate) {
+        if (eventStartDate == null || eventEndDate == null) return false;
+        return !(LocalDate.now().isAfter(eventStartDate) && LocalDate.now().isBefore(eventEndDate));
     }
 
     public boolean validationType(ICouponGenericType couponGenericType, CouponCommonDTO couponCommonDTO) {
@@ -111,9 +132,12 @@ public class CouponUtilities {
         return false;
     }
 
-    public boolean validationUsageCoupon() {
-        return false;
+    public boolean validationUsageCoupon(CouponOfUserDTO couponOfUserDTO) {
+        Page<CouponRedemption> couponPage = iCouponRedemptionRepository.findAllByUserIdAndCouponId(
+                couponOfUserDTO.userID(),
+                couponOfUserDTO.couponID()
+        );
+        return !couponPage.isEmpty();
     }
-
 
 }

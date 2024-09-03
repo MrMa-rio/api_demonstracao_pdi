@@ -1,5 +1,6 @@
 package com.criar.pdi.demonstracao.services;
 
+import com.criar.pdi.demonstracao.DTOs.Coupon.CouponOfUserDTO;
 import com.criar.pdi.demonstracao.DTOs.CouponRedemptionDTO.CouponRedemptionCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.CouponRedemptionDTO.CouponRedemptionDTO;
 import com.criar.pdi.demonstracao.exceptions.CouponRedemption.CouponRedemptionDuplicateDataException.CouponRedemptionDuplicateDataException;
@@ -45,6 +46,7 @@ public class CouponRedemptionService {
         }
     }
 
+
     public CouponRedemptionCommonDTO setCouponRedemption(CouponRedemptionDTO couponDTO) {
         try {
             CouponRedemption coupon = new CouponRedemption(couponDTO);
@@ -73,10 +75,9 @@ public class CouponRedemptionService {
         }
     }
 
-
-    public Page<CouponRedemptionCommonDTO> getCouponRedemptionByUserIdAndCouponId(String userId, String couponId, int page, int size) {
+    public Page<CouponRedemptionCommonDTO> getCouponRedemptionByUserIdAndCouponId(CouponOfUserDTO couponOfUserDTO, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<CouponRedemption> couponRedemptionPage = iCouponRedemptionRepository.findAllByUserIdAndCouponId(userId, couponId, pageable);
+        Page<CouponRedemption> couponRedemptionPage = iCouponRedemptionRepository.findAllByUserIdAndCouponId(couponOfUserDTO.userID(), couponOfUserDTO.couponID(), pageable);
         return page(couponRedemptionPage, pageable);
     }
 }

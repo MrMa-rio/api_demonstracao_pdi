@@ -1,5 +1,6 @@
 package com.criar.pdi.demonstracao.controllers;
 
+import com.criar.pdi.demonstracao.DTOs.Coupon.CouponOfUserDTO;
 import com.criar.pdi.demonstracao.DTOs.CouponRedemptionDTO.CouponRedemptionCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.CouponRedemptionDTO.CouponRedemptionDTO;
 import com.criar.pdi.demonstracao.DTOs.Message.MessageDTO;
@@ -43,7 +44,7 @@ public class CouponRedemptionController {
             @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            Page<CouponRedemptionCommonDTO> pages = couponRedemptionService.getCouponRedemptionByUserIdAndCouponId(userID, couponID, page, size);
+            Page<CouponRedemptionCommonDTO> pages = couponRedemptionService.getCouponRedemptionByUserIdAndCouponId(new CouponOfUserDTO(userID, couponID), page, size);
             return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(pages)));
         } catch (CouponRedemptionNotFoundException e) {
             ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
