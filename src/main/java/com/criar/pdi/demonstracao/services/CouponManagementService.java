@@ -44,10 +44,21 @@ public class CouponManagementService {
         if (couponUtilities.isExpirate(couponDTO.expirationDate())) {
             throw new RuntimeException("O cupom esta expirado - management");
         }
-        if( couponUtilities.isExpirateEvent(couponDTO.eventStartDate(), couponDTO.eventEndDate())){
+        if (couponUtilities.isExpirateEvent(couponDTO.eventStartDate(), couponDTO.eventEndDate())) {
             throw new RuntimeException("O evento desse cupom foi expirado - management");
         }
-        return null; // continuar as verificacoes, possivelmente colocaremos essa implemenmtancao na cupomUtilies
+
+//        if(!couponUtilities.validationType(couponDTO.couponType(), couponDTO)){
+//            throw new RuntimeException("O evento desse cupom foi expirado - management");
+//        }
+//        if(!couponUtilities.validationType(couponDTO.discountType(), couponDTO)){
+//            throw new RuntimeException("O evento desse cupom foi expirado - management");
+//        }
+//        if(!couponUtilities.validationType(couponDTO.createdBy(), couponDTO)){
+//            throw new RuntimeException("O evento desse cupom foi expirado - management");
+//        }
+
+        return couponRedemptionService.setCouponRedemption(couponRedemptionDTO); // continuar as verificacoes, possivelmente colocaremos essa implemenmtancao na cupomUtilies
     }
 
 
