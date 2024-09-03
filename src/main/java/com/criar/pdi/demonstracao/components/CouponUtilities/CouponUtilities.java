@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Component
 public class CouponUtilities {
@@ -133,11 +134,11 @@ public class CouponUtilities {
     }
 
     public boolean validationUsageCoupon(CouponOfUserDTO couponOfUserDTO) {
-        Page<CouponRedemption> couponPage = iCouponRedemptionRepository.findAllByUserIdAndCouponId(
+        Optional<CouponRedemption> couponPage = iCouponRedemptionRepository.findByUserIdAndCouponId(
                 couponOfUserDTO.userID(),
                 couponOfUserDTO.couponID()
         );
-        return !couponPage.isEmpty();
+        return couponPage.isPresent(); // analisar esta logica;
     }
 
 }

@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface ICouponRedemptionRepository extends JpaRepository<CouponRedemption, Integer> {
     Page<CouponRedemption> findAllByUserIdAndCouponId(String userId, String couponId, Pageable pageable);
 
-    Page<CouponRedemption> findAllByUserIdAndCouponId(String userId, String couponId);
+    Optional<CouponRedemption> findByUserIdAndCouponId(String userId, String couponId);
 }
