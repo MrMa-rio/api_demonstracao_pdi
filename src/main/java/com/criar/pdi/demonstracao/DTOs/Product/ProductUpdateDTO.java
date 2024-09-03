@@ -14,6 +14,7 @@ public record ProductUpdateDTO(
         String name,
         String description,
         String price,
+        Double pricePromotion,
         Integer quantity,
         String category,
         String store,

@@ -21,6 +21,7 @@ public class Product {
     private String name;
     private String description;
     private Double price;
+    private Double pricePromotion;
     private Integer quantity;
     private String category;
     private String store;
@@ -36,6 +37,7 @@ public class Product {
         this.name = productDTO.name();
         this.description = productDTO.description();
         this.price = productDTO.price();
+        this.pricePromotion = productDTO.pricePromotion();
         this.quantity = productDTO.quantity();
         this.category = productDTO.category();
         this.store = productDTO.store();
@@ -50,6 +52,7 @@ public class Product {
                 this.name,
                 this.description,
                 this.price,
+                this.pricePromotion,
                 this.quantity,
                 this.category,
                 this.store,

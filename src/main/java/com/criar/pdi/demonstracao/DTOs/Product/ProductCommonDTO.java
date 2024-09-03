@@ -16,6 +16,7 @@ public record ProductCommonDTO(
         String name,
         String description,
         Double price,
+        Double pricePromotion,
         Integer quantity,
         @NotNull
         String category,

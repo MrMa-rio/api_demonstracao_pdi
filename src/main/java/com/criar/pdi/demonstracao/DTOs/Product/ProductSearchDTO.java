@@ -6,6 +6,7 @@ public record ProductSearchDTO(
         String name,
         String description,
         Double price,
+        Double pricePromotion,
         Integer quantity,
         Integer category,
         Integer storeID,
