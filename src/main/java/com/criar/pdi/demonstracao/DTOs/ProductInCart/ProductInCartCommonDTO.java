@@ -8,6 +8,7 @@ public record ProductInCartCommonDTO(
         String ID,
         String productID,
         String quantity,
+        Double price,
         String shoppingCartID,
         LocalDateTime inclusionDate,
         LocalDateTime updatedDate,

@@ -20,6 +20,7 @@ public class ProductInCart {
     @Column(name = "product_id")
     private String productID;
     private String quantity;
+    private Double price;
     @Column(name = "shopping_cart_id")
     private String shoppingCartID;
     private LocalDateTime inclusionDate;
@@ -29,6 +30,7 @@ public class ProductInCart {
     public ProductInCart(ProductInCartDTO productInCartDTO){
         this.ID = productInCartDTO.ID();
         this.quantity = productInCartDTO.quantity();
+        this.price = productInCartDTO.price();
         this.productID = productInCartDTO.productID();
         this.shoppingCartID = productInCartDTO.shoppingCartID();
     }
@@ -38,6 +40,7 @@ public class ProductInCart {
                 this.ID,
                 this.productID,
                 this.quantity,
+                this.price,
                 this.shoppingCartID,
                 this.inclusionDate,
                 this.updatedDate,
@@ -54,6 +57,9 @@ public class ProductInCart {
         }
         if (productInCartUpdateDTO.quantity() != null){
             this.quantity = productInCartUpdateDTO.quantity();
+        }
+        if (productInCartUpdateDTO.price() != null){
+            this.price = productInCartUpdateDTO.price();
         }
     }
     public void setInclusionDate() {

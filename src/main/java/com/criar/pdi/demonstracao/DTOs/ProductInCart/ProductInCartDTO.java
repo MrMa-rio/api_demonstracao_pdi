@@ -14,6 +14,8 @@ public record ProductInCartDTO(
         @NotNull
         String quantity,
         @NotNull
+        Double price,
+        @NotNull
         String shoppingCartID
 ) implements IGenericDTO {
 }
