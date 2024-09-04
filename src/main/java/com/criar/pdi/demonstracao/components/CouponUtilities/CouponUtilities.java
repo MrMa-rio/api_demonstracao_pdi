@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -134,11 +136,17 @@ public class CouponUtilities {
     }
 
     public boolean validationUsageCoupon(CouponOfUserDTO couponOfUserDTO) {
-        Optional<CouponRedemption> couponPage = iCouponRedemptionRepository.findByUserIdAndCouponId(
+        List<CouponRedemption> couponPage = iCouponRedemptionRepository.findAllByUserIdAndCouponId(
                 couponOfUserDTO.userID(),
                 couponOfUserDTO.couponID()
         );
-        return couponPage.isPresent(); // analisar esta logica;
+        ArrayList<CouponRedemption> couponList = new ArrayList<>();
+        couponPage.forEach(couponRedemption -> {
+            if (!couponRedemption.isInactive()) {
+                couponList.add(couponRedemption);
+            }
+        });
+        return couponList.isEmpty();
     }
 
 }

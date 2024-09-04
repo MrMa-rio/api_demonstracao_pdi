@@ -7,17 +7,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class CouponGenericException extends RuntimeException{
+public class CouponGenericException extends RuntimeException {
 
-    public CouponGenericException(){
+    public CouponGenericException() {
         super("ERRO AO REALIZAR UMA OPERAÇÃO - CUPOM");
     }
-    public CouponGenericException(String message){
+
+    public CouponGenericException(String message) {
         super(message);
     }
 
     @ExceptionHandler(CouponGenericException.class)
-    public ResponseEntity<ResponseBody> execute(CouponGenericException e){
-        return ResponseEntity.ok(new ResponseBody(400, new MessageDTO(e.getMessage())));
+    public ResponseEntity<ResponseBody> execute(CouponGenericException e) {
+        return ResponseEntity.status(400).body(new ResponseBody(400, new MessageDTO(e.getMessage())));
     }
 }
