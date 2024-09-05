@@ -8,6 +8,7 @@ public record ProductInCartUpdateDTO(
         String ID,
         String productID,
         String quantity,
+        Double price,
         String shoppingCartID
 ) implements IGenericDTO {
 }
