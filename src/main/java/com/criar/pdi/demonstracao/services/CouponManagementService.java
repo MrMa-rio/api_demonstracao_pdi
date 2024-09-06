@@ -21,6 +21,7 @@ public class CouponManagementService {
         this.couponRedemptionService = couponRedemptionService;
         this.couponUtilities = couponUtilities;
     }
+
     public CouponRedemptionCommonDTO setCouponRedemption(CouponRedemptionDTO couponRedemptionDTO) {
         CouponCommonDTO couponDTO = couponService.getCouponByID(couponRedemptionDTO.couponId());
 
@@ -47,15 +48,18 @@ public class CouponManagementService {
         if (couponUtilities.isExpirateEvent(couponDTO.eventStartDate(), couponDTO.eventEndDate())) {
             throw new CouponGenericException("O EVENTO DESTE CUPOM JA FINALIZOU");
         }
-//        if(!couponUtilities.validationType(couponDTO.couponType(), couponDTO)){
-//            throw new RuntimeException("O evento desse cupom foi expirado - management");
-//        }
-//        if(!couponUtilities.validationType(couponDTO.discountType(), couponDTO)){
-//            throw new RuntimeException("O evento desse cupom foi expirado - management");
-//        }
-//        if(!couponUtilities.validationType(couponDTO.createdBy(), couponDTO)){
-//            throw new RuntimeException("O evento desse cupom foi expirado - management");
-//        }
+        if (!couponUtilities.validationType(couponDTO.couponType(), couponDTO)) {
+            throw new RuntimeException("O CUPOM NAO PODE SER APLICADO PARA ESTE USUARIO - TIPO DO CUPOM");
+        }
+        if (!couponUtilities.validationType(couponDTO.discountType(), couponDTO)) {
+            throw new RuntimeException("O CUPOM NAO PODE SER APLICADO PARA ESTE USUARIO - DESCONTO DO CUPOM");
+        }
+        if (!couponUtilities.validationType(couponDTO.createdBy(), couponDTO)) {
+            throw new RuntimeException("O CUPOM NAO PODE SER APLICADO PARA ESTE USUARIO - CRIADOR DO CUPOM");
+        }
+
+        //TODO: CORRIGIR ESSES VALIDATION, POIS A COMPARACAO ESTA REDUNDANTE, O CORRETO E COMPARAR COM OS DADOS DO CUPOM RESGATADO E NAO COM O CUPOM RECUPERADO DO BANCO
+        //TODO: PODEMOS TAMBEM UNIVERSALIZAR O METODO DE VALIDACAO RECEBENDO SOMENTE DOIS PARAMETROS, CUPOMDTO e CUPOMRESGATEDTO
         return couponRedemptionService.setCouponRedemption(couponRedemptionDTO);
     }
 }

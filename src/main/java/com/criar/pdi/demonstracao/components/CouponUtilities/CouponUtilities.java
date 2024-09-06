@@ -2,6 +2,7 @@ package com.criar.pdi.demonstracao.components.CouponUtilities;
 
 import com.criar.pdi.demonstracao.DTOs.Coupon.CouponCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Coupon.CouponOfUserDTO;
+import com.criar.pdi.demonstracao.exceptions.Coupon.CouponGenericException.CouponGenericException;
 import com.criar.pdi.demonstracao.models.Coupon.*;
 import com.criar.pdi.demonstracao.models.CouponRedemption.CouponRedemption;
 import com.criar.pdi.demonstracao.repositories.ICouponRedemptionRepository;
@@ -43,26 +44,50 @@ public class CouponUtilities {
 
     public boolean validationType(ICouponGenericType couponGenericType, CouponCommonDTO couponCommonDTO) {
         if (couponGenericType.getClass() == CouponCreateType.class) {
+            Optional<Coupon> coupon = iCouponRepository.findByCouponCode(couponCommonDTO.couponCode());
             if (couponGenericType == CouponCreateType.ADMIN) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
+                if (coupon.isPresent()) {
+                    CouponCommonDTO couponDTO = coupon.get().getCommonDTO();
+                    if (couponDTO.userID() != null && !couponDTO.userID().equals(couponCommonDTO.userID())) {
+                        return false;
+                    }
+                    if (couponDTO.categoryID() != null && !couponDTO.categoryID().equals(couponCommonDTO.categoryID())) {
+                        return false;
+                    }
+                }
+                /*
                 TODO: - Segundo:
                     Estruture para se adequar ao design pattern da aplicação;
                 */
 
             }
             if (couponGenericType == CouponCreateType.CLIENT) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
+                if (coupon.isPresent()) {
+                    CouponCommonDTO couponDTO = coupon.get().getCommonDTO();
+                    if (couponDTO.userID() != null && !couponDTO.userID().equals(couponCommonDTO.userID())) {
+                        return false;
+                    }
+                    if (couponDTO.categoryID() != null && !couponDTO.categoryID().equals(couponCommonDTO.categoryID())) {
+                        return false;
+                    }
+                }
+                /*
                 TODO: - Segundo:
                     Estruture para se adequar ao design pattern da aplicação;
                 */
 
             }
             if (couponGenericType == CouponCreateType.OWNER) {
-                return true; /*
+                if (coupon.isPresent()) {
+                    CouponCommonDTO couponDTO = coupon.get().getCommonDTO();
+                    if (couponDTO.userID() != null && !couponDTO.userID().equals(couponCommonDTO.userID())) {
+                        return false;
+                    }
+                    if (couponDTO.categoryID() != null && !couponDTO.categoryID().equals(couponCommonDTO.categoryID())) {
+                        return false;
+                    }
+                }
+                 /*
                 TODO: - Primeiro:
                     Crie a logica desta condição;
                 TODO: - Segundo:
@@ -70,69 +95,75 @@ public class CouponUtilities {
                 */
 
             }
-        }
-        if (couponGenericType.getClass() == CouponDiscountType.class) {
-
-            if (couponGenericType == CouponDiscountType.PERCENTAGE) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
-                TODO: - Segundo:
-                    Estruture para se adequar ao design pattern da aplicação;
-                */
-
-            }
-            if (couponGenericType == CouponDiscountType.FIXED) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
-                TODO: - Segundo:
-                    Estruture para se adequar ao design pattern da aplicação;
-                */
-
-            }
-
         }
         if (couponGenericType.getClass() == CouponType.class) {
 
-            if (couponGenericType == CouponType.CATEGORY) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
-                TODO: - Segundo:
-                    Estruture para se adequar ao design pattern da aplicação;
-                */
-
-            }
-            if (couponGenericType == CouponType.EVENT) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
-                TODO: - Segundo:
-                    Estruture para se adequar ao design pattern da aplicação;
-                */
-
-            }
-            if (couponGenericType == CouponType.STORE) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
-                TODO: - Segundo:
-                    Estruture para se adequar ao design pattern da aplicação;
-                */
-
-            }
-            if (couponGenericType == CouponType.CLIENT) {
-                return true; /*
-                TODO: - Primeiro:
-                    Crie a logica desta condição;
-                TODO: - Segundo:
-                    Estruture para se adequar ao design pattern da aplicação;
-                */
-
-            }
+//            if (couponGenericType == CouponType.CATEGORY) {
+//
+//                return true; /*
+//                TODO: - Primeiro:
+//                    Crie a logica desta condição;
+//                TODO: - Segundo:
+//                    Estruture para se adequar ao design pattern da aplicação;
+//                */
+//
+//            }
+//            if (couponGenericType == CouponType.EVENT) {
+//                return true; /*
+//                TODO: - Primeiro:
+//                    Crie a logica desta condição;
+//                TODO: - Segundo:
+//                    Estruture para se adequar ao design pattern da aplicação;
+//                */
+//
+//            }
+//            if (couponGenericType == CouponType.STORE) {
+//                return true; /*
+//                TODO: - Primeiro:
+//                    Crie a logica desta condição;
+//                TODO: - Segundo:
+//                    Estruture para se adequar ao design pattern da aplicação;
+//                */
+//
+//            }
+//            if (couponGenericType == CouponType.CLIENT) {
+//                return true; /*
+//                TODO: - Primeiro:
+//                    Crie a logica desta condição;
+//                TODO: - Segundo:
+//                    Estruture para se adequar ao design pattern da aplicação;
+//                */
+//
+//            }
         }
-        return false;
+//        if (couponGenericType.getClass() == CouponDiscountType.class) {
+//
+//            if (couponGenericType == CouponDiscountType.PERCENTAGE) {
+//
+//
+//                 /*
+//                TODO: - Primeiro:
+//                    Crie a logica desta condição;
+//                TODO: - Segundo:
+//                    Estruture para se adequar ao design pattern da aplicação;
+//                */
+//
+//            }
+//            if (couponGenericType == CouponDiscountType.FIXED) {
+//
+//
+//                 /*
+//                TODO: - Primeiro:
+//                    Crie a logica desta condição;
+//                TODO: - Segundo:
+//                    Estruture para se adequar ao design pattern da aplicação;
+//                */
+//
+//            }
+//
+//        }
+
+        return true;
     }
 
     public boolean validationUsageCoupon(CouponOfUserDTO couponOfUserDTO) {
