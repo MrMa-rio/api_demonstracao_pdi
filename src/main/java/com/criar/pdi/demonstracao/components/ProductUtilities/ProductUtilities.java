@@ -7,12 +7,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductUtilities {
 
-    public Double calculatePrice(CouponCommonDTO couponDTO, Double price){
+    public Double calculatePrice(CouponDiscountType discountType, Double price, Double discountValue){
 
-        if(couponDTO.discountType() == CouponDiscountType.FIXED){
-            Double newPrice = price - couponDTO.discountValue();
-            if(price < 1) return 0.0; // TODO: Logica simples, futuramente colocar condição caso o item for do mesmo valor do cupom, limitação do valor descontado
+        if(discountType == CouponDiscountType.FIXED){
+            Double newPrice = price - discountValue;
+            if(price > 0) return newPrice; // TODO: Logica simples, futuramente colocar condição caso o item for do mesmo valor do cupom, limitação do valor descontado
         }
-        return 0.0;
+        if(discountType == CouponDiscountType.PERCENTAGE){
+            Double discountPrice = price / discountValue;
+            Double newPrice = price - discountPrice;
+            if(price > 0) return newPrice;
+        }
+        return price;
     }
 }
