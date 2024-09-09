@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "products_in_cart_tbl")
 public class ProductInCart {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private String ID;
     @Column(name = "product_id")
@@ -27,7 +28,7 @@ public class ProductInCart {
     private LocalDateTime updatedDate;
     private LocalDateTime exclusionDate;
 
-    public ProductInCart(ProductInCartDTO productInCartDTO){
+    public ProductInCart(ProductInCartDTO productInCartDTO) {
         this.ID = productInCartDTO.ID();
         this.quantity = productInCartDTO.quantity();
         this.price = productInCartDTO.price();
@@ -35,7 +36,18 @@ public class ProductInCart {
         this.shoppingCartID = productInCartDTO.shoppingCartID();
     }
 
-    public ProductInCartCommonDTO getCommonDTO(){
+    public ProductInCart(ProductInCartCommonDTO productInCartDTO) {
+        this.ID = productInCartDTO.ID();
+        this.quantity = productInCartDTO.quantity();
+        this.price = productInCartDTO.price();
+        this.productID = productInCartDTO.productID();
+        this.shoppingCartID = productInCartDTO.shoppingCartID();
+        this.inclusionDate = productInCartDTO.inclusionDate();
+        this.updatedDate = productInCartDTO.updatedDate();
+        this.exclusionDate = productInCartDTO.exclusionDate();
+    }
+
+    public ProductInCartCommonDTO getCommonDTO() {
         return new ProductInCartCommonDTO(
                 this.ID,
                 this.productID,
@@ -47,21 +59,23 @@ public class ProductInCart {
                 this.exclusionDate
         );
     }
-    public void update(ProductInCartUpdateDTO productInCartUpdateDTO){
+
+    public void update(ProductInCartUpdateDTO productInCartUpdateDTO) {
         setUpdateDate();
-        if(productInCartUpdateDTO.productID() != null){
+        if (productInCartUpdateDTO.productID() != null) {
             this.productID = productInCartUpdateDTO.productID();
         }
-        if (productInCartUpdateDTO.shoppingCartID() != null){
+        if (productInCartUpdateDTO.shoppingCartID() != null) {
             this.shoppingCartID = productInCartUpdateDTO.shoppingCartID();
         }
-        if (productInCartUpdateDTO.quantity() != null){
+        if (productInCartUpdateDTO.quantity() != null) {
             this.quantity = productInCartUpdateDTO.quantity();
         }
-        if (productInCartUpdateDTO.price() != null){
+        if (productInCartUpdateDTO.price() != null) {
             this.price = productInCartUpdateDTO.price();
         }
     }
+
     public void setInclusionDate() {
         this.inclusionDate = LocalDateTime.now();
     }
