@@ -1,6 +1,7 @@
 package com.criar.pdi.demonstracao.DTOs.Coupon;
 
 import com.criar.pdi.demonstracao.DTOs.Generic.IGenericDTO;
+import com.criar.pdi.demonstracao.models.Coupon.Coupon;
 import com.criar.pdi.demonstracao.models.Coupon.CouponCreateType;
 import com.criar.pdi.demonstracao.models.Coupon.CouponDiscountType;
 import com.criar.pdi.demonstracao.models.Coupon.CouponType;
@@ -30,5 +31,4 @@ public record CouponDTO(
         Integer createdBy,
         @NotNull
         LocalDateTime createdAt
-) implements IGenericDTO {
-}
+) implements IGenericDTO {}
