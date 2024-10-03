@@ -35,14 +35,7 @@ public class StoreController {
     @GetMapping("/{storeID}")
     @Operation(description = "Pega uma Loja atraves do ID")
     public ResponseEntity<?> getStore(@PathVariable String storeID) {
-        try {
-            return ResponseEntity.ok(new ResponseBody(200, storeService.getStoreByID(storeID)));
-        } catch (StoreNotFoundException e) {
-            ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.status(404).body(responseBody);
-        } catch (StoreIdentifyException e) {
-            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
-        }
+        return ResponseEntity.ok(new ResponseBody(200, storeService.getStoreByID(storeID)));
     }
 
     @GetMapping("/{storeID}/products")
@@ -50,14 +43,7 @@ public class StoreController {
     public ResponseEntity<?> getProductsByStoreID(@PathVariable String storeID,
                                                   @RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size) {
-        try {
-            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(storeService.getProductsByStoreByID(storeID, page, size))));
-        } catch (StoreNotFoundException e) {
-            ResponseBody responseBody = new ResponseBody(404, new MessageDTO(e.getMessage()));
-            return ResponseEntity.status(404).body(responseBody);
-        } catch (StoreIdentifyException e) {
-            return ResponseEntity.status(422).body(new ResponseBody(422, new MessageDTO(e.getMessage())));
-        }
+        return ResponseEntity.ok(new ResponseBody(200, new MessageDTO(storeService.getProductsByStoreByID(storeID, page, size))));
     }
 
 
@@ -141,8 +127,6 @@ public class StoreController {
         try {
             StoreCommonDTO storeCommonDTO = storeService.setStore(storeDTO);
             return ResponseEntity.ok(new ResponseBody(200, storeCommonDTO));
-        } catch (StoreDuplicateDataException e) {
-            return ResponseEntity.status(409).body(new ResponseBody(409, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -155,8 +139,6 @@ public class StoreController {
         try {
             StoreCommonDTO storeCommonDTO = storeService.updateStore(storeUpdateDTO);
             return ResponseEntity.ok(new ResponseBody(200, storeCommonDTO));
-        } catch (StoreNotFoundException e) {
-            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("ERRO NA OPERACAO");
         }
@@ -167,14 +149,8 @@ public class StoreController {
     public ResponseEntity<ResponseBody> deleteLogicalStore(
             @PathVariable String storeID
     ) {
-        try {
-            storeService.deleteStore(storeID);
-            return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("LOJA INATIVADA COM SUCESSO!!")));
-        } catch (StoreNotFoundException e) {
-            return ResponseEntity.status(404).body(new ResponseBody(404, new MessageDTO(e.getMessage())));
-        } catch (StoreGenericException e) {
-            return ResponseEntity.badRequest().body(new ResponseBody(400, new MessageDTO(e.getMessage())));
-        }
+        storeService.deleteStore(storeID);
+        return ResponseEntity.ok(new ResponseBody(200, new MessageDTO("LOJA INATIVADA COM SUCESSO!!")));
     }
 }
 
