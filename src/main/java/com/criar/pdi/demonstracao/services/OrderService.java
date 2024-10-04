@@ -5,6 +5,7 @@ import com.criar.pdi.demonstracao.DTOs.Order.OrderCommonDTO;
 import com.criar.pdi.demonstracao.DTOs.Order.OrderDTO;
 import com.criar.pdi.demonstracao.DTOs.Order.OrderUpdateDTO;
 import com.criar.pdi.demonstracao.exceptions.Order.OrderDuplicateDataException.OrderDuplicateDataException;
+import com.criar.pdi.demonstracao.exceptions.Order.OrderGenericException.OrderGenericException;
 import com.criar.pdi.demonstracao.exceptions.Order.OrderIdentifyException.OrderIdentifyException;
 import com.criar.pdi.demonstracao.exceptions.Order.OrderNotFoundException.OrderNotFoundException;
 import com.criar.pdi.demonstracao.exceptions.Store.StoreGenericException.StoreGenericException;
@@ -42,8 +43,8 @@ public class OrderService {
             throw new OrderNotFoundException();
         } catch (NumberFormatException e) {
             throw new OrderIdentifyException();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            throw new OrderGenericException(e.getMessage());
         }
     }
 
@@ -57,7 +58,7 @@ public class OrderService {
             throw new OrderDuplicateDataException();
         }
         catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new OrderGenericException(e.getMessage());
         }
     }
 
@@ -70,7 +71,7 @@ public class OrderService {
         } catch (NoSuchElementException e) {
             throw new OrderNotFoundException();
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw new OrderGenericException(e.getMessage());
         }
     }
 
@@ -85,7 +86,7 @@ public class OrderService {
         } catch (NoSuchElementException e) {
             throw new OrderNotFoundException();
         } catch (RuntimeException e){
-            throw new RuntimeException(e);
+            throw new OrderGenericException(e.getMessage());
         }
     }
 }
